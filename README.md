@@ -21,61 +21,63 @@ Prerequisites: JDK 25, update Intellij to the most recent version.
    What can I do for you?
    ____________________________________________________________
 
-   read book
+   todo read book
    ____________________________________________________________
-   added: read book
-   ____________________________________________________________
-
-   return book
-   ____________________________________________________________
-   added: return book
+   Got it. I've added this task:
+     [T][ ] read book
+   Now you have 1 tasks in the list.
    ____________________________________________________________
 
-   buy bread
+   deadline return book /by Sunday
    ____________________________________________________________
-   added: buy bread
-   ____________________________________________________________
-
-   list
-   ____________________________________________________________
-   Here are the tasks in your list:
-   1.[ ] read book
-   2.[ ] return book
-   3.[ ] buy bread
+   Got it. I've added this task:
+     [D][ ] return book (by: Sunday)
+   Now you have 2 tasks in the list.
    ____________________________________________________________
 
-   mark 2
+   event project meeting /from Mon 2pm /to 4pm
    ____________________________________________________________
-   Nice! I've marked this task as done:
-     [X] return book
+   Got it. I've added this task:
+     [E][ ] project meeting (from: Mon 2pm to: 4pm)
+   Now you have 3 tasks in the list.
    ____________________________________________________________
 
    mark 1
    ____________________________________________________________
    Nice! I've marked this task as done:
-     [X] read book
+     [T][X] read book
    ____________________________________________________________
 
    list
    ____________________________________________________________
    Here are the tasks in your list:
-   1.[X] read book
-   2.[X] return book
-   3.[ ] buy bread
+   1.[T][X] read book
+   2.[D][ ] return book (by: Sunday)
+   3.[E][ ] project meeting (from: Mon 2pm to: 4pm)
    ____________________________________________________________
 
-   unmark 2
+   unmark 1
    ____________________________________________________________
    OK, I've marked this task as not done yet:
-     [ ] return book
+     [T][ ] read book
    ____________________________________________________________
 
    list
    ____________________________________________________________
    Here are the tasks in your list:
-   1.[X] read book
-   2.[ ] return book
-   3.[ ] buy bread
+   1.[T][ ] read book
+   2.[D][ ] return book (by: Sunday)
+   3.[E][ ] project meeting (from: Mon 2pm to: 4pm)
+   ____________________________________________________________
+
+   todo
+   ____________________________________________________________
+   OOPS!!! A todo needs a description. For example: todo read book
+   ____________________________________________________________
+
+   blah
+   ____________________________________________________________
+   OOPS!!! Sorry, I don't understand that command. Try todo, deadline, event, list, mark, unmark, or bye.
    ____________________________________________________________
 
    bye
