@@ -13,8 +13,7 @@ public class Duke {
     private static final String UNMARK_COMMAND_PREFIX = "unmark ";
     private static final int MAX_TASKS = 100;
 
-    private static final String[] tasks = new String[MAX_TASKS];
-    private static final boolean[] taskDone = new boolean[MAX_TASKS];
+    private static final Task[] tasks = new Task[MAX_TASKS];
     private static int taskCount = 0;
 
     /**
@@ -67,12 +66,12 @@ public class Duke {
     /**
      * Stores a task and confirms that it was added.
      */
-    private static void addTask(String task) {
-        tasks[taskCount] = task;
+    private static void addTask(String description) {
+        tasks[taskCount] = new Task(description);
         taskCount++;
 
         System.out.println(LINE);
-        System.out.println("added: " + task);
+        System.out.println("added: " + description);
         System.out.println(LINE);
     }
 
@@ -83,11 +82,11 @@ public class Duke {
         int taskNumber = Integer.parseInt(command.substring(MARK_COMMAND_PREFIX.length()));
         int taskIndex = taskNumber - 1;
 
-        taskDone[taskIndex] = true;
+        tasks[taskIndex].markAsDone();
 
         System.out.println(LINE);
         System.out.println("Nice! I've marked this task as done:");
-        System.out.println("  [X] " + tasks[taskIndex]);
+        System.out.println("  " + tasks[taskIndex]);
         System.out.println(LINE);
     }
 
@@ -98,11 +97,11 @@ public class Duke {
         int taskNumber = Integer.parseInt(command.substring(UNMARK_COMMAND_PREFIX.length()));
         int taskIndex = taskNumber - 1;
 
-        taskDone[taskIndex] = false;
+        tasks[taskIndex].markAsNotDone();
 
         System.out.println(LINE);
         System.out.println("OK, I've marked this task as not done yet:");
-        System.out.println("  [ ] " + tasks[taskIndex]);
+        System.out.println("  " + tasks[taskIndex]);
         System.out.println(LINE);
     }
 
@@ -113,8 +112,7 @@ public class Duke {
         System.out.println(LINE);
         System.out.println("Here are the tasks in your list:");
         for (int i = 0; i < taskCount; i++) {
-            String statusIcon = taskDone[i] ? "X" : " ";
-            System.out.println((i + 1) + ".[" + statusIcon + "] " + tasks[i]);
+            System.out.println((i + 1) + "." + tasks[i]);
         }
         System.out.println(LINE);
     }
