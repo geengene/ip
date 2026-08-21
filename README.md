@@ -56,6 +56,13 @@ Prerequisites: JDK 25, update Intellij to the most recent version.
    3.[E][ ] project meeting (from: Mon 2pm to: 4pm)
    ____________________________________________________________
 
+   delete 2
+   ____________________________________________________________
+   Noted. I've removed this task:
+     [D][ ] return book (by: Sunday)
+   Now you have 2 tasks in the list.
+   ____________________________________________________________
+
    unmark 1
    ____________________________________________________________
    OK, I've marked this task as not done yet:
@@ -66,8 +73,7 @@ Prerequisites: JDK 25, update Intellij to the most recent version.
    ____________________________________________________________
    Here are the tasks in your list:
    1.[T][ ] read book
-   2.[D][ ] return book (by: Sunday)
-   3.[E][ ] project meeting (from: Mon 2pm to: 4pm)
+   2.[E][ ] project meeting (from: Mon 2pm to: 4pm)
    ____________________________________________________________
 
    todo
@@ -77,7 +83,7 @@ Prerequisites: JDK 25, update Intellij to the most recent version.
 
    blah
    ____________________________________________________________
-   OOPS!!! Sorry, I don't understand that command. Try todo, deadline, event, list, mark, unmark, or bye.
+   OOPS!!! Sorry, I don't understand that command. Try todo, deadline, event, list, mark, unmark, delete, or bye.
    ____________________________________________________________
 
    bye

@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
@@ -9,6 +10,8 @@ public class Duke {
     private static final String CHATBOT_BANNER = CHATBOT_NAME;
     private static final String EXIT_COMMAND = "bye";
     private static final String LIST_COMMAND = "list";
+    private static final String DELETE_COMMAND = "delete";
+    private static final String DELETE_COMMAND_PREFIX = "delete ";
     private static final String MARK_COMMAND = "mark";
     private static final String MARK_COMMAND_PREFIX = "mark ";
     private static final String UNMARK_COMMAND = "unmark";
@@ -22,10 +25,8 @@ public class Duke {
     private static final String BY_SEPARATOR = "/by";
     private static final String FROM_SEPARATOR = "/from";
     private static final String TO_SEPARATOR = "/to";
-    private static final int MAX_TASKS = 100;
 
-    private static final Task[] tasks = new Task[MAX_TASKS];
-    private static int taskCount = 0;
+    private static final ArrayList<Task> tasks = new ArrayList<>();
 
     /**
      * Greets the user and handles commands until the user enters "bye".
@@ -76,6 +77,8 @@ public class Duke {
     private static void handleCommand(String command) throws DukeException {
         if (command.equals(LIST_COMMAND)) {
             printTaskList();
+        } else if (command.equals(DELETE_COMMAND) || command.startsWith(DELETE_COMMAND_PREFIX)) {
+            deleteTask(command);
         } else if (command.equals(MARK_COMMAND) || command.startsWith(MARK_COMMAND_PREFIX)) {
             markTask(command);
         } else if (command.equals(UNMARK_COMMAND) || command.startsWith(UNMARK_COMMAND_PREFIX)) {
@@ -87,7 +90,7 @@ public class Duke {
         } else if (command.equals(EVENT_COMMAND) || command.startsWith(EVENT_COMMAND_PREFIX)) {
             addEvent(command);
         } else {
-            throw new DukeException("Sorry, I don't understand that command. Try todo, deadline, event, list, mark, unmark, or bye.");
+            throw new DukeException("Sorry, I don't understand that command. Try todo, deadline, event, list, mark, unmark, delete, or bye.");
         }
     }
 
@@ -168,18 +171,27 @@ public class Duke {
     /**
      * Stores a task and confirms that it was added.
      */
-    private static void addTask(Task task) throws DukeException {
-        if (taskCount >= MAX_TASKS) {
-            throw new DukeException("The task list is full. I can store up to " + MAX_TASKS + " tasks.");
-        }
-
-        tasks[taskCount] = task;
-        taskCount++;
+    private static void addTask(Task task) {
+        tasks.add(task);
 
         System.out.println(LINE);
         System.out.println("Got it. I've added this task:");
         System.out.println("  " + task);
-        System.out.println("Now you have " + taskCount + " tasks in the list.");
+        System.out.println("Now you have " + tasks.size() + " tasks in the list.");
+        System.out.println(LINE);
+    }
+
+    /**
+     * Deletes the selected task from the list.
+     */
+    private static void deleteTask(String command) throws DukeException {
+        int taskIndex = parseTaskIndex(command, DELETE_COMMAND, DELETE_COMMAND_PREFIX);
+        Task deletedTask = tasks.remove(taskIndex);
+
+        System.out.println(LINE);
+        System.out.println("Noted. I've removed this task:");
+        System.out.println("  " + deletedTask);
+        System.out.println("Now you have " + tasks.size() + " tasks in the list.");
         System.out.println(LINE);
     }
 
@@ -189,11 +201,11 @@ public class Duke {
     private static void markTask(String command) throws DukeException {
         int taskIndex = parseTaskIndex(command, MARK_COMMAND, MARK_COMMAND_PREFIX);
 
-        tasks[taskIndex].markAsDone();
+        tasks.get(taskIndex).markAsDone();
 
         System.out.println(LINE);
         System.out.println("Nice! I've marked this task as done:");
-        System.out.println("  " + tasks[taskIndex]);
+        System.out.println("  " + tasks.get(taskIndex));
         System.out.println(LINE);
     }
 
@@ -203,11 +215,11 @@ public class Duke {
     private static void unmarkTask(String command) throws DukeException {
         int taskIndex = parseTaskIndex(command, UNMARK_COMMAND, UNMARK_COMMAND_PREFIX);
 
-        tasks[taskIndex].markAsNotDone();
+        tasks.get(taskIndex).markAsNotDone();
 
         System.out.println(LINE);
         System.out.println("OK, I've marked this task as not done yet:");
-        System.out.println("  " + tasks[taskIndex]);
+        System.out.println("  " + tasks.get(taskIndex));
         System.out.println(LINE);
     }
 
@@ -227,7 +239,7 @@ public class Duke {
             throw new DukeException("Task numbers must be whole numbers. For example: " + commandWord + " 2");
         }
 
-        if (taskNumber < 1 || taskNumber > taskCount) {
+        if (taskNumber < 1 || taskNumber > tasks.size()) {
             throw new DukeException("Task " + taskNumber + " does not exist. Use list to see the available task numbers.");
         }
 
@@ -240,8 +252,8 @@ public class Duke {
     private static void printTaskList() {
         System.out.println(LINE);
         System.out.println("Here are the tasks in your list:");
-        for (int i = 0; i < taskCount; i++) {
-            System.out.println((i + 1) + "." + tasks[i]);
+        for (int i = 0; i < tasks.size(); i++) {
+            System.out.println((i + 1) + "." + tasks.get(i));
         }
         System.out.println(LINE);
     }

@@ -1,7 +1,7 @@
 # UI Test Plan
 
-## Test Case: typed tasks can be added, listed, marked, and unmarked
-Aim: Verify todo, deadline, and event tasks use inherited formatting and keep correct done status.
+## Test Case: typed tasks can be added, listed, marked, unmarked, and deleted
+Aim: Verify todo, deadline, and event tasks use inherited formatting, keep correct done status, and renumber correctly after deletion.
 
 ### Inputs
 ```text
@@ -10,6 +10,7 @@ deadline return book /by Sunday
 event project meeting /from Mon 2pm /to 4pm
 mark 1
 list
+delete 2
 unmark 1
 list
 bye
@@ -48,14 +49,18 @@ Here are the tasks in your list:
 3.[E][ ] project meeting (from: Mon 2pm to: 4pm)
 ____________________________________________________________
 ____________________________________________________________
+Noted. I've removed this task:
+  [D][ ] return book (by: Sunday)
+Now you have 2 tasks in the list.
+____________________________________________________________
+____________________________________________________________
 OK, I've marked this task as not done yet:
   [T][ ] read book
 ____________________________________________________________
 ____________________________________________________________
 Here are the tasks in your list:
 1.[T][ ] read book
-2.[D][ ] return book (by: Sunday)
-3.[E][ ] project meeting (from: Mon 2pm to: 4pm)
+2.[E][ ] project meeting (from: Mon 2pm to: 4pm)
 ____________________________________________________________
 ____________________________________________________________
 Bye. Hope to see you again soon!
@@ -78,8 +83,19 @@ event /from Mon /to Tue
 mark
 mark two
 mark 1
+unmark
+unmark two
+unmark 1
+delete
+delete two
+delete 0
+delete -1
+delete 1
 todo valid
 mark 2
+delete 2
+todo remove
+delete 2
 list
 bye
 ```
@@ -95,7 +111,7 @@ ____________________________________________________________
 OOPS!!! A todo needs a description. For example: todo read book
 ____________________________________________________________
 ____________________________________________________________
-OOPS!!! Sorry, I don't understand that command. Try todo, deadline, event, list, mark, unmark, or bye.
+OOPS!!! Sorry, I don't understand that command. Try todo, deadline, event, list, mark, unmark, delete, or bye.
 ____________________________________________________________
 ____________________________________________________________
 OOPS!!! A deadline needs /by. For example: deadline submit report /by Sunday
@@ -125,12 +141,49 @@ ____________________________________________________________
 OOPS!!! Task 1 does not exist. Use list to see the available task numbers.
 ____________________________________________________________
 ____________________________________________________________
+OOPS!!! Please include a task number. For example: unmark 2
+____________________________________________________________
+____________________________________________________________
+OOPS!!! Task numbers must be whole numbers. For example: unmark 2
+____________________________________________________________
+____________________________________________________________
+OOPS!!! Task 1 does not exist. Use list to see the available task numbers.
+____________________________________________________________
+____________________________________________________________
+OOPS!!! Please include a task number. For example: delete 2
+____________________________________________________________
+____________________________________________________________
+OOPS!!! Task numbers must be whole numbers. For example: delete 2
+____________________________________________________________
+____________________________________________________________
+OOPS!!! Task 0 does not exist. Use list to see the available task numbers.
+____________________________________________________________
+____________________________________________________________
+OOPS!!! Task -1 does not exist. Use list to see the available task numbers.
+____________________________________________________________
+____________________________________________________________
+OOPS!!! Task 1 does not exist. Use list to see the available task numbers.
+____________________________________________________________
+____________________________________________________________
 Got it. I've added this task:
   [T][ ] valid
 Now you have 1 tasks in the list.
 ____________________________________________________________
 ____________________________________________________________
 OOPS!!! Task 2 does not exist. Use list to see the available task numbers.
+____________________________________________________________
+____________________________________________________________
+OOPS!!! Task 2 does not exist. Use list to see the available task numbers.
+____________________________________________________________
+____________________________________________________________
+Got it. I've added this task:
+  [T][ ] remove
+Now you have 2 tasks in the list.
+____________________________________________________________
+____________________________________________________________
+Noted. I've removed this task:
+  [T][ ] remove
+Now you have 1 tasks in the list.
 ____________________________________________________________
 ____________________________________________________________
 Here are the tasks in your list:
