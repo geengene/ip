@@ -9,9 +9,11 @@ public class Duke {
     private static final String CHATBOT_BANNER = CHATBOT_NAME;
     private static final String EXIT_COMMAND = "bye";
     private static final String LIST_COMMAND = "list";
+    private static final String MARK_COMMAND_PREFIX = "mark ";
     private static final int MAX_TASKS = 100;
 
     private static final String[] tasks = new String[MAX_TASKS];
+    private static final boolean[] taskDone = new boolean[MAX_TASKS];
     private static int taskCount = 0;
 
     /**
@@ -49,6 +51,8 @@ public class Duke {
 
             if (command.equals(LIST_COMMAND)) {
                 printTaskList();
+            } else if (command.startsWith(MARK_COMMAND_PREFIX)) {
+                markTask(command);
             } else {
                 addTask(command);
             }
@@ -70,12 +74,29 @@ public class Duke {
     }
 
     /**
+     * Marks the selected task as done.
+     */
+    private static void markTask(String command) {
+        int taskNumber = Integer.parseInt(command.substring(MARK_COMMAND_PREFIX.length()));
+        int taskIndex = taskNumber - 1;
+
+        taskDone[taskIndex] = true;
+
+        System.out.println(LINE);
+        System.out.println("Nice! I've marked this task as done:");
+        System.out.println("  [X] " + tasks[taskIndex]);
+        System.out.println(LINE);
+    }
+
+    /**
      * Prints all stored tasks in the order they were added.
      */
     private static void printTaskList() {
         System.out.println(LINE);
+        System.out.println("Here are the tasks in your list:");
         for (int i = 0; i < taskCount; i++) {
-            System.out.println((i + 1) + ". " + tasks[i]);
+            String statusIcon = taskDone[i] ? "X" : " ";
+            System.out.println((i + 1) + ".[" + statusIcon + "] " + tasks[i]);
         }
         System.out.println(LINE);
     }
