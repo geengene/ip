@@ -50,11 +50,31 @@ Prerequisites: JDK 25, update Intellij to the most recent version.
      [X] return book
    ____________________________________________________________
 
+   mark 1
+   ____________________________________________________________
+   Nice! I've marked this task as done:
+     [X] read book
+   ____________________________________________________________
+
    list
    ____________________________________________________________
    Here are the tasks in your list:
-   1.[ ] read book
+   1.[X] read book
    2.[X] return book
+   3.[ ] buy bread
+   ____________________________________________________________
+
+   unmark 2
+   ____________________________________________________________
+   OK, I've marked this task as not done yet:
+     [ ] return book
+   ____________________________________________________________
+
+   list
+   ____________________________________________________________
+   Here are the tasks in your list:
+   1.[X] read book
+   2.[ ] return book
    3.[ ] buy bread
    ____________________________________________________________
 

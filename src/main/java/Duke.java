@@ -10,6 +10,7 @@ public class Duke {
     private static final String EXIT_COMMAND = "bye";
     private static final String LIST_COMMAND = "list";
     private static final String MARK_COMMAND_PREFIX = "mark ";
+    private static final String UNMARK_COMMAND_PREFIX = "unmark ";
     private static final int MAX_TASKS = 100;
 
     private static final String[] tasks = new String[MAX_TASKS];
@@ -53,6 +54,8 @@ public class Duke {
                 printTaskList();
             } else if (command.startsWith(MARK_COMMAND_PREFIX)) {
                 markTask(command);
+            } else if (command.startsWith(UNMARK_COMMAND_PREFIX)) {
+                unmarkTask(command);
             } else {
                 addTask(command);
             }
@@ -85,6 +88,21 @@ public class Duke {
         System.out.println(LINE);
         System.out.println("Nice! I've marked this task as done:");
         System.out.println("  [X] " + tasks[taskIndex]);
+        System.out.println(LINE);
+    }
+
+    /**
+     * Marks the selected task as not done.
+     */
+    private static void unmarkTask(String command) {
+        int taskNumber = Integer.parseInt(command.substring(UNMARK_COMMAND_PREFIX.length()));
+        int taskIndex = taskNumber - 1;
+
+        taskDone[taskIndex] = false;
+
+        System.out.println(LINE);
+        System.out.println("OK, I've marked this task as not done yet:");
+        System.out.println("  [ ] " + tasks[taskIndex]);
         System.out.println(LINE);
     }
 
