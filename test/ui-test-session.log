@@ -63,6 +63,10 @@ ____________________________________________________________
 Bye. Hope to see you again soon!
 ____________________________________________________________
 
+Data file:
+T | 0 | read book
+E | 0 | project meeting | Mon 2pm | 4pm
+
 ## invalid commands report errors and preserve valid task state
 Aim: Verify incorrect inputs do not crash the chatbot and do not create accidental tasks.
 
@@ -181,6 +185,37 @@ ____________________________________________________________
 ____________________________________________________________
 Here are the tasks in your list:
 1.[T][ ] valid
+____________________________________________________________
+____________________________________________________________
+Bye. Hope to see you again soon!
+____________________________________________________________
+
+Data file:
+T | 0 | valid
+
+## saved tasks are loaded at startup
+Aim: Verify tasks saved in the data file are available when the chatbot starts again.
+
+Setup data file:
+T | 1 | read book
+D | 0 | return book | Sunday
+E | 0 | project meeting | Mon 2pm | 4pm
+
+Input:
+list
+bye
+
+Output:
+____________________________________________________________
+geen
+Hello! I'm geen.
+What can I do for you?
+____________________________________________________________
+____________________________________________________________
+Here are the tasks in your list:
+1.[T][X] read book
+2.[D][ ] return book (by: Sunday)
+3.[E][ ] project meeting (from: Mon 2pm to: 4pm)
 ____________________________________________________________
 ____________________________________________________________
 Bye. Hope to see you again soon!
