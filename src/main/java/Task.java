@@ -42,6 +42,13 @@ public class Task {
     }
 
     /**
+     * Returns true if this task has been marked as done.
+     */
+    public boolean isDone() {
+        return isDone;
+    }
+
+    /**
      * Returns this task in the format shown to the user.
      */
     @Override

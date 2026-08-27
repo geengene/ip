@@ -15,6 +15,20 @@ public class Event extends Task {
     }
 
     /**
+     * Returns when this event starts.
+     */
+    public String getFrom() {
+        return from;
+    }
+
+    /**
+     * Returns when this event ends.
+     */
+    public String getTo() {
+        return to;
+    }
+
+    /**
      * Returns this event in the format shown to the user.
      */
     @Override

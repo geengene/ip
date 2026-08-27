@@ -32,8 +32,20 @@ public class Duke {
      * Greets the user and handles commands until the user enters "bye".
      */
     public static void main(String[] args) {
+        loadTasks();
         printGreeting();
         handleCommands();
+    }
+
+    /**
+     * Loads tasks saved from earlier runs.
+     */
+    private static void loadTasks() {
+        try {
+            tasks.addAll(Storage.loadTasks());
+        } catch (DukeException e) {
+            printError(e.getMessage());
+        }
     }
 
     /**
@@ -171,8 +183,9 @@ public class Duke {
     /**
      * Stores a task and confirms that it was added.
      */
-    private static void addTask(Task task) {
+    private static void addTask(Task task) throws DukeException {
         tasks.add(task);
+        Storage.saveTasks(tasks);
 
         System.out.println(LINE);
         System.out.println("Got it. I've added this task:");
@@ -187,6 +200,7 @@ public class Duke {
     private static void deleteTask(String command) throws DukeException {
         int taskIndex = parseTaskIndex(command, DELETE_COMMAND, DELETE_COMMAND_PREFIX);
         Task deletedTask = tasks.remove(taskIndex);
+        Storage.saveTasks(tasks);
 
         System.out.println(LINE);
         System.out.println("Noted. I've removed this task:");
@@ -202,6 +216,7 @@ public class Duke {
         int taskIndex = parseTaskIndex(command, MARK_COMMAND, MARK_COMMAND_PREFIX);
 
         tasks.get(taskIndex).markAsDone();
+        Storage.saveTasks(tasks);
 
         System.out.println(LINE);
         System.out.println("Nice! I've marked this task as done:");
@@ -216,6 +231,7 @@ public class Duke {
         int taskIndex = parseTaskIndex(command, UNMARK_COMMAND, UNMARK_COMMAND_PREFIX);
 
         tasks.get(taskIndex).markAsNotDone();
+        Storage.saveTasks(tasks);
 
         System.out.println(LINE);
         System.out.println("OK, I've marked this task as not done yet:");
