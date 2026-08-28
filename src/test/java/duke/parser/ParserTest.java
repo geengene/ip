@@ -1,0 +1,100 @@
+package duke.parser;
+
+import duke.exception.DukeException;
+import duke.task.Deadline;
+import duke.task.Event;
+import duke.task.ToDo;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+/**
+ * Tests command parsing behavior.
+ */
+public class ParserTest {
+    @Test
+    public void parseCommandType_knownCommands_returnsCorrectType() throws DukeException {
+        assertEquals(Parser.CommandType.TODO, Parser.parseCommandType("todo read book"));
+        assertEquals(Parser.CommandType.DEADLINE, Parser.parseCommandType("deadline return book /by 2019-10-15"));
+        assertEquals(Parser.CommandType.EVENT, Parser.parseCommandType("event meeting /from 2019-10-15 /to 2019-10-16"));
+        assertEquals(Parser.CommandType.LIST, Parser.parseCommandType("list"));
+        assertEquals(Parser.CommandType.MARK, Parser.parseCommandType("mark 1"));
+        assertEquals(Parser.CommandType.UNMARK, Parser.parseCommandType("unmark 1"));
+        assertEquals(Parser.CommandType.DELETE, Parser.parseCommandType("delete 1"));
+        assertEquals(Parser.CommandType.EXIT, Parser.parseCommandType("bye"));
+    }
+
+    @Test
+    public void parseCommandType_unknownCommand_throwsException() {
+        DukeException exception = assertThrows(DukeException.class, () -> Parser.parseCommandType("hello"));
+        assertEquals(
+                "Sorry, I don't understand that command. Try todo, deadline, event, list, mark, unmark, delete, or bye.",
+                exception.getMessage());
+    }
+
+    @Test
+    public void parseToDo_validCommand_returnsTodo() throws DukeException {
+        ToDo task = Parser.parseToDo("todo read book");
+
+        assertEquals("[T][ ] read book", task.toString());
+    }
+
+    @Test
+    public void parseToDo_missingDescription_throwsException() {
+        DukeException exception = assertThrows(DukeException.class, () -> Parser.parseToDo("todo"));
+
+        assertEquals("A todo needs a description. For example: todo read book", exception.getMessage());
+    }
+
+    @Test
+    public void parseDeadline_validIsoDate_returnsDeadlineWithFormattedDate() throws DukeException {
+        Deadline task = Parser.parseDeadline("deadline return book /by 2019-10-15");
+
+        assertEquals("[D][ ] return book (by: Oct 15 2019)", task.toString());
+        assertEquals("2019-10-15", task.getBy().toString());
+    }
+
+    @Test
+    public void parseDeadline_invalidDate_throwsException() {
+        DukeException exception = assertThrows(
+                DukeException.class, () -> Parser.parseDeadline("deadline return book /by Sunday"));
+
+        assertEquals(
+                "Dates must be in yyyy-MM-dd format. For example: deadline submit report /by 2019-10-15",
+                exception.getMessage());
+    }
+
+    @Test
+    public void parseEvent_validIsoDates_returnsEventWithFormattedDates() throws DukeException {
+        Event task = Parser.parseEvent("event project meeting /from 2019-10-15 /to 2019-10-16");
+
+        assertEquals("[E][ ] project meeting (from: Oct 15 2019 to: Oct 16 2019)", task.toString());
+        assertEquals("2019-10-15", task.getFrom().toString());
+        assertEquals("2019-10-16", task.getTo().toString());
+    }
+
+    @Test
+    public void parseEvent_missingTo_throwsException() {
+        DukeException exception = assertThrows(
+                DukeException.class, () -> Parser.parseEvent("event project meeting /from 2019-10-15"));
+
+        assertEquals(
+                "An event needs /from and /to. For example: event meeting /from 2019-10-15 /to 2019-10-16",
+                exception.getMessage());
+    }
+
+    @Test
+    public void parseTaskIndex_validTaskNumber_returnsZeroBasedIndex() throws DukeException {
+        assertEquals(0, Parser.parseTaskIndex("mark 1", Parser.CommandType.MARK, 3));
+        assertEquals(2, Parser.parseTaskIndex("delete 3", Parser.CommandType.DELETE, 3));
+    }
+
+    @Test
+    public void parseTaskIndex_invalidTaskNumber_throwsException() {
+        DukeException exception = assertThrows(
+                DukeException.class, () -> Parser.parseTaskIndex("mark 4", Parser.CommandType.MARK, 3));
+
+        assertEquals("Task 4 does not exist. Use list to see the available task numbers.", exception.getMessage());
+    }
+}
