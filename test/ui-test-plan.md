@@ -6,8 +6,8 @@ Aim: Verify todo, deadline, and event tasks use inherited formatting, keep corre
 ### Inputs
 ```text
 todo read book
-deadline return book /by Sunday
-event project meeting /from Mon 2pm /to 4pm
+deadline return book /by 2019-10-15
+event project meeting /from 2019-10-15 /to 2019-10-16
 mark 1
 list
 delete 2
@@ -30,12 +30,12 @@ Now you have 1 tasks in the list.
 ____________________________________________________________
 ____________________________________________________________
 Got it. I've added this task:
-  [D][ ] return book (by: Sunday)
+  [D][ ] return book (by: Oct 15 2019)
 Now you have 2 tasks in the list.
 ____________________________________________________________
 ____________________________________________________________
 Got it. I've added this task:
-  [E][ ] project meeting (from: Mon 2pm to: 4pm)
+  [E][ ] project meeting (from: Oct 15 2019 to: Oct 16 2019)
 Now you have 3 tasks in the list.
 ____________________________________________________________
 ____________________________________________________________
@@ -45,12 +45,12 @@ ____________________________________________________________
 ____________________________________________________________
 Here are the tasks in your list:
 1.[T][X] read book
-2.[D][ ] return book (by: Sunday)
-3.[E][ ] project meeting (from: Mon 2pm to: 4pm)
+2.[D][ ] return book (by: Oct 15 2019)
+3.[E][ ] project meeting (from: Oct 15 2019 to: Oct 16 2019)
 ____________________________________________________________
 ____________________________________________________________
 Noted. I've removed this task:
-  [D][ ] return book (by: Sunday)
+  [D][ ] return book (by: Oct 15 2019)
 Now you have 2 tasks in the list.
 ____________________________________________________________
 ____________________________________________________________
@@ -60,7 +60,7 @@ ____________________________________________________________
 ____________________________________________________________
 Here are the tasks in your list:
 1.[T][ ] read book
-2.[E][ ] project meeting (from: Mon 2pm to: 4pm)
+2.[E][ ] project meeting (from: Oct 15 2019 to: Oct 16 2019)
 ____________________________________________________________
 ____________________________________________________________
 Bye. Hope to see you again soon!
@@ -70,7 +70,35 @@ ____________________________________________________________
 ### Expected Data File
 ```text
 T | 0 | read book
-E | 0 | project meeting | Mon 2pm | 4pm
+E | 0 | project meeting | 2019-10-15 | 2019-10-16
+```
+
+## Test Case: corrupted saved dates report errors
+Aim: Verify an invalid saved deadline date is reported without crashing the chatbot.
+
+### Setup Data File
+```text
+D | 0 | return book | Sunday
+```
+
+### Inputs
+```text
+bye
+```
+
+### Expected Output
+```text
+____________________________________________________________
+OOPS!!! The saved deadline on line 1 has an invalid date.
+____________________________________________________________
+____________________________________________________________
+geen
+Hello! I'm geen.
+What can I do for you?
+____________________________________________________________
+____________________________________________________________
+Bye. Hope to see you again soon!
+____________________________________________________________
 ```
 
 ## Test Case: invalid commands report errors and preserve valid task state
@@ -83,9 +111,11 @@ blah
 deadline return book
 deadline /by Sunday
 deadline return book /by
+deadline return book /by Sunday
 event meeting /from Mon 2pm
 event meeting /to 4pm
 event /from Mon /to Tue
+event project meeting /from Mon /to Tue
 mark
 mark two
 mark 1
@@ -120,22 +150,28 @@ ____________________________________________________________
 OOPS!!! Sorry, I don't understand that command. Try todo, deadline, event, list, mark, unmark, delete, or bye.
 ____________________________________________________________
 ____________________________________________________________
-OOPS!!! A deadline needs /by. For example: deadline submit report /by Sunday
+OOPS!!! A deadline needs /by. For example: deadline submit report /by 2019-10-15
 ____________________________________________________________
 ____________________________________________________________
 OOPS!!! A deadline needs a description before /by.
 ____________________________________________________________
 ____________________________________________________________
-OOPS!!! A deadline needs a time after /by.
+OOPS!!! A deadline needs a date after /by.
 ____________________________________________________________
 ____________________________________________________________
-OOPS!!! An event needs /from and /to. For example: event meeting /from Mon 2pm /to 4pm
+OOPS!!! Dates must be in yyyy-MM-dd format. For example: deadline submit report /by 2019-10-15
 ____________________________________________________________
 ____________________________________________________________
-OOPS!!! An event needs /from and /to. For example: event meeting /from Mon 2pm /to 4pm
+OOPS!!! An event needs /from and /to. For example: event meeting /from 2019-10-15 /to 2019-10-16
+____________________________________________________________
+____________________________________________________________
+OOPS!!! An event needs /from and /to. For example: event meeting /from 2019-10-15 /to 2019-10-16
 ____________________________________________________________
 ____________________________________________________________
 OOPS!!! An event needs a description before /from.
+____________________________________________________________
+____________________________________________________________
+OOPS!!! Dates must be in yyyy-MM-dd format. For example: event meeting /from 2019-10-15 /to 2019-10-16
 ____________________________________________________________
 ____________________________________________________________
 OOPS!!! Please include a task number. For example: mark 2
@@ -211,8 +247,8 @@ Aim: Verify tasks saved in the data file are available when the chatbot starts a
 ### Setup Data File
 ```text
 T | 1 | read book
-D | 0 | return book | Sunday
-E | 0 | project meeting | Mon 2pm | 4pm
+D | 0 | return book | 2019-10-15
+E | 0 | project meeting | 2019-10-15 | 2019-10-16
 ```
 
 ### Inputs
@@ -231,8 +267,8 @@ ____________________________________________________________
 ____________________________________________________________
 Here are the tasks in your list:
 1.[T][X] read book
-2.[D][ ] return book (by: Sunday)
-3.[E][ ] project meeting (from: Mon 2pm to: 4pm)
+2.[D][ ] return book (by: Oct 15 2019)
+3.[E][ ] project meeting (from: Oct 15 2019 to: Oct 16 2019)
 ____________________________________________________________
 ____________________________________________________________
 Bye. Hope to see you again soon!
