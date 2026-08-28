@@ -11,22 +11,30 @@ import java.util.List;
  * Handles saving tasks to disk and loading them when the chatbot starts.
  */
 public class Storage {
-    private static final Path DATA_FILE = Paths.get("data", "duke.txt");
     private static final String SEPARATOR = " | ";
+
+    private final Path dataFile;
+
+    /**
+     * Creates a storage helper that reads from and writes to the given file path.
+     */
+    public Storage(String filePath) {
+        dataFile = Paths.get(filePath);
+    }
 
     /**
      * Loads saved tasks from the data file. If the file does not exist yet,
      * the chatbot starts with an empty task list.
      */
-    public static ArrayList<Task> loadTasks() throws DukeException {
+    public ArrayList<Task> loadTasks() throws DukeException {
         ArrayList<Task> loadedTasks = new ArrayList<>();
 
-        if (!Files.exists(DATA_FILE)) {
+        if (!Files.exists(dataFile)) {
             return loadedTasks;
         }
 
         try {
-            List<String> lines = Files.readAllLines(DATA_FILE);
+            List<String> lines = Files.readAllLines(dataFile);
             for (int i = 0; i < lines.size(); i++) {
                 String line = lines.get(i);
                 if (!line.trim().isEmpty()) {
@@ -44,9 +52,9 @@ public class Storage {
      * Saves the current tasks to the data file, creating the data folder first
      * if needed.
      */
-    public static void saveTasks(ArrayList<Task> tasks) throws DukeException {
+    public void saveTasks(ArrayList<Task> tasks) throws DukeException {
         try {
-            Path folder = DATA_FILE.getParent();
+            Path folder = dataFile.getParent();
             if (folder != null) {
                 Files.createDirectories(folder);
             }
@@ -55,7 +63,7 @@ public class Storage {
             for (Task task : tasks) {
                 lines.add(formatTask(task));
             }
-            Files.write(DATA_FILE, lines);
+            Files.write(dataFile, lines);
         } catch (IOException e) {
             throw new DukeException("I could not save the tasks.");
         }

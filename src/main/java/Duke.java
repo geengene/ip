@@ -4,34 +4,50 @@ import java.util.Scanner;
  * Entry point for the geen chatbot.
  */
 public class Duke {
-    private static final Ui ui = new Ui();
-    private static TaskList tasks;
+    private final Storage storage;
+    private final TaskList tasks;
+    private final Ui ui;
 
     /**
-     * Greets the user and handles commands until the user enters "bye".
+     * Creates a chatbot that saves tasks in the given file.
      */
-    public static void main(String[] args) {
-        loadTasks();
-        ui.showGreeting();
-        handleCommands();
+    public Duke(String filePath) {
+        ui = new Ui();
+        storage = new Storage(filePath);
+        tasks = loadTasks();
     }
 
     /**
      * Loads tasks saved from earlier runs.
      */
-    private static void loadTasks() {
+    private TaskList loadTasks() {
         try {
-            tasks = new TaskList(Storage.loadTasks());
+            return new TaskList(storage.loadTasks());
         } catch (DukeException e) {
             ui.showError(e.getMessage());
-            tasks = new TaskList();
+            return new TaskList();
         }
+    }
+
+    /**
+     * Greets the user and handles commands until the user enters "bye".
+     */
+    public void run() {
+        ui.showGreeting();
+        handleCommands();
+    }
+
+    /**
+     * Starts the chatbot.
+     */
+    public static void main(String[] args) {
+        new Duke("data/duke.txt").run();
     }
 
     /**
      * Reads user commands and performs the requested action.
      */
-    private static void handleCommands() {
+    private void handleCommands() {
         Scanner scanner = new Scanner(System.in);
 
         while (scanner.hasNextLine()) {
@@ -53,7 +69,7 @@ public class Duke {
     /**
      * Performs the action requested by one user command.
      */
-    private static boolean handleCommand(String command) throws DukeException {
+    private boolean handleCommand(String command) throws DukeException {
         Parser.CommandType commandType = Parser.parseCommandType(command);
 
         if (commandType == Parser.CommandType.EXIT) {
@@ -81,30 +97,30 @@ public class Duke {
     /**
      * Creates a todo task from the user command.
      */
-    private static void addToDo(String command) throws DukeException {
+    private void addToDo(String command) throws DukeException {
         addTask(Parser.parseToDo(command));
     }
 
     /**
      * Creates a deadline task from the user command.
      */
-    private static void addDeadline(String command) throws DukeException {
+    private void addDeadline(String command) throws DukeException {
         addTask(Parser.parseDeadline(command));
     }
 
     /**
      * Creates an event task from the user command.
      */
-    private static void addEvent(String command) throws DukeException {
+    private void addEvent(String command) throws DukeException {
         addTask(Parser.parseEvent(command));
     }
 
     /**
      * Stores a task and confirms that it was added.
      */
-    private static void addTask(Task task) throws DukeException {
+    private void addTask(Task task) throws DukeException {
         tasks.add(task);
-        Storage.saveTasks(tasks.getTasks());
+        storage.saveTasks(tasks.getTasks());
 
         ui.showTaskAdded(task, tasks.size());
     }
@@ -112,10 +128,10 @@ public class Duke {
     /**
      * Deletes the selected task from the list.
      */
-    private static void deleteTask(String command) throws DukeException {
+    private void deleteTask(String command) throws DukeException {
         int taskIndex = Parser.parseTaskIndex(command, Parser.CommandType.DELETE, tasks.size());
         Task deletedTask = tasks.delete(taskIndex);
-        Storage.saveTasks(tasks.getTasks());
+        storage.saveTasks(tasks.getTasks());
 
         ui.showTaskDeleted(deletedTask, tasks.size());
     }
@@ -123,11 +139,11 @@ public class Duke {
     /**
      * Marks the selected task as done.
      */
-    private static void markTask(String command) throws DukeException {
+    private void markTask(String command) throws DukeException {
         int taskIndex = Parser.parseTaskIndex(command, Parser.CommandType.MARK, tasks.size());
 
         Task task = tasks.mark(taskIndex);
-        Storage.saveTasks(tasks.getTasks());
+        storage.saveTasks(tasks.getTasks());
 
         ui.showTaskMarked(task);
     }
@@ -135,11 +151,11 @@ public class Duke {
     /**
      * Marks the selected task as not done.
      */
-    private static void unmarkTask(String command) throws DukeException {
+    private void unmarkTask(String command) throws DukeException {
         int taskIndex = Parser.parseTaskIndex(command, Parser.CommandType.UNMARK, tasks.size());
 
         Task task = tasks.unmark(taskIndex);
-        Storage.saveTasks(tasks.getTasks());
+        storage.saveTasks(tasks.getTasks());
 
         ui.showTaskUnmarked(task);
     }
@@ -147,7 +163,7 @@ public class Duke {
     /**
      * Prints all stored tasks in the order they were added.
      */
-    private static void printTaskList() {
+    private void printTaskList() {
         ui.showTaskList(tasks);
     }
 }
