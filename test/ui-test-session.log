@@ -9,6 +9,8 @@ deadline return book /by 2019-10-15
 event project meeting /from 2019-10-15 /to 2019-10-16
 mark 1
 list
+find book
+find movie
 delete 2
 unmark 1
 list
@@ -44,6 +46,14 @@ Here are the tasks in your list:
 1.[T][X] read book
 2.[D][ ] return book (by: Oct 15 2019)
 3.[E][ ] project meeting (from: Oct 15 2019 to: Oct 16 2019)
+____________________________________________________________
+____________________________________________________________
+Here are the matching tasks in your list:
+1.[T][X] read book
+2.[D][ ] return book (by: Oct 15 2019)
+____________________________________________________________
+____________________________________________________________
+Here are the matching tasks in your list:
 ____________________________________________________________
 ____________________________________________________________
 Noted. I've removed this task:
@@ -95,6 +105,7 @@ Aim: Verify incorrect inputs do not crash the chatbot and do not create accident
 Input:
 todo
 blah
+find
 deadline return book
 deadline /by Sunday
 deadline return book /by
@@ -132,7 +143,10 @@ ____________________________________________________________
 OOPS!!! A todo needs a description. For example: todo read book
 ____________________________________________________________
 ____________________________________________________________
-OOPS!!! Sorry, I don't understand that command. Try todo, deadline, event, list, mark, unmark, delete, or bye.
+OOPS!!! Sorry, I don't understand that command. Try todo, deadline, event, list, mark, unmark, delete, find, or bye.
+____________________________________________________________
+____________________________________________________________
+OOPS!!! A find command needs a keyword. For example: find book
 ____________________________________________________________
 ____________________________________________________________
 OOPS!!! A deadline needs /by. For example: deadline submit report /by 2019-10-15

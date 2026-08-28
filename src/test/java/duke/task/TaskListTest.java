@@ -48,4 +48,28 @@ public class TaskListTest {
         assertEquals("[T][ ] read book", unmarkedTask.toString());
         assertEquals("[T][ ] read book", tasks.get(0).toString());
     }
+
+    @Test
+    public void find_matchingKeyword_returnsMatchingTasksOnly() {
+        TaskList tasks = new TaskList();
+        tasks.add(new ToDo("read book"));
+        tasks.add(new ToDo("write report"));
+        tasks.add(new ToDo("return book"));
+
+        TaskList matchingTasks = tasks.find("book");
+
+        assertEquals(2, matchingTasks.size());
+        assertEquals("[T][ ] read book", matchingTasks.get(0).toString());
+        assertEquals("[T][ ] return book", matchingTasks.get(1).toString());
+    }
+
+    @Test
+    public void find_noMatchingKeyword_returnsEmptyTaskList() {
+        TaskList tasks = new TaskList();
+        tasks.add(new ToDo("read book"));
+
+        TaskList matchingTasks = tasks.find("movie");
+
+        assertEquals(0, matchingTasks.size());
+    }
 }
