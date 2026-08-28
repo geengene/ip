@@ -17,6 +17,8 @@ public class TaskList {
 
     /**
      * Creates a task list using tasks loaded from storage.
+     *
+     * @param tasks Tasks to use as the initial list content.
      */
     public TaskList(ArrayList<Task> tasks) {
         this.tasks = tasks;
@@ -24,6 +26,8 @@ public class TaskList {
 
     /**
      * Adds a task to the end of the list.
+     *
+     * @param task Task to add.
      */
     public void add(Task task) {
         tasks.add(task);
@@ -31,6 +35,9 @@ public class TaskList {
 
     /**
      * Deletes and returns the task at the given zero-based index.
+     *
+     * @param taskIndex Zero-based index of the task to delete.
+     * @return Deleted task.
      */
     public Task delete(int taskIndex) {
         return tasks.remove(taskIndex);
@@ -38,6 +45,9 @@ public class TaskList {
 
     /**
      * Marks the task at the given zero-based index as done.
+     *
+     * @param taskIndex Zero-based index of the task to mark.
+     * @return Marked task.
      */
     public Task mark(int taskIndex) {
         Task task = tasks.get(taskIndex);
@@ -47,6 +57,9 @@ public class TaskList {
 
     /**
      * Marks the task at the given zero-based index as not done.
+     *
+     * @param taskIndex Zero-based index of the task to unmark.
+     * @return Unmarked task.
      */
     public Task unmark(int taskIndex) {
         Task task = tasks.get(taskIndex);

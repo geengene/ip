@@ -46,6 +46,10 @@ public class Parser {
 
     /**
      * Returns the type of command typed by the user.
+     *
+     * @param command Full command entered by the user.
+     * @return Command type represented by the command word.
+     * @throws DukeException If the command word is unknown.
      */
     public static CommandType parseCommandType(String command) throws DukeException {
         if (command.equals(EXIT_COMMAND)) {
@@ -71,6 +75,10 @@ public class Parser {
 
     /**
      * Creates a todo task from the user command.
+     *
+     * @param command Full todo command entered by the user.
+     * @return Todo task described by the command.
+     * @throws DukeException If the todo description is missing.
      */
     public static ToDo parseToDo(String command) throws DukeException {
         String description = getCommandDetails(command, TODO_COMMAND, TODO_COMMAND_PREFIX);
@@ -83,6 +91,10 @@ public class Parser {
 
     /**
      * Creates a deadline task from the user command.
+     *
+     * @param command Full deadline command entered by the user.
+     * @return Deadline task described by the command.
+     * @throws DukeException If required fields are missing or the date is invalid.
      */
     public static Deadline parseDeadline(String command) throws DukeException {
         String details = getCommandDetails(command, DEADLINE_COMMAND, DEADLINE_COMMAND_PREFIX);
@@ -106,6 +118,10 @@ public class Parser {
 
     /**
      * Creates an event task from the user command.
+     *
+     * @param command Full event command entered by the user.
+     * @return Event task described by the command.
+     * @throws DukeException If required fields are missing or a date is invalid.
      */
     public static Event parseEvent(String command) throws DukeException {
         String details = getCommandDetails(command, EVENT_COMMAND, EVENT_COMMAND_PREFIX);
@@ -137,6 +153,12 @@ public class Parser {
 
     /**
      * Returns the zero-based task index from commands such as "mark 2".
+     *
+     * @param command Full mark, unmark, or delete command entered by the user.
+     * @param commandType Type of command being parsed.
+     * @param taskCount Number of tasks currently in the task list.
+     * @return Zero-based task index.
+     * @throws DukeException If the task number is missing, invalid, or out of range.
      */
     public static int parseTaskIndex(String command, CommandType commandType, int taskCount) throws DukeException {
         String commandWord = getCommandWord(commandType);

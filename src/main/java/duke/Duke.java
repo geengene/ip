@@ -19,6 +19,8 @@ public class Duke {
 
     /**
      * Creates a chatbot that saves tasks in the given file.
+     *
+     * @param filePath Relative or absolute path of the save file.
      */
     public Duke(String filePath) {
         ui = new Ui();
@@ -40,6 +42,7 @@ public class Duke {
 
     /**
      * Greets the user and handles commands until the user enters "bye".
+     * Commands are read from standard input and responses are printed to standard output.
      */
     public void run() {
         ui.showGreeting();
