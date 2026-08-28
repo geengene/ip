@@ -1,12 +1,12 @@
 package duke.parser;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
+
 import duke.exception.DukeException;
 import duke.task.Deadline;
 import duke.task.Event;
 import duke.task.ToDo;
-
-import java.time.LocalDate;
-import java.time.format.DateTimeParseException;
 
 /**
  * Makes sense of user commands typed into the chatbot.
@@ -65,7 +65,8 @@ public class Parser {
         } else if (command.equals(EVENT_COMMAND) || command.startsWith(EVENT_COMMAND_PREFIX)) {
             return CommandType.EVENT;
         } else {
-            throw new DukeException("Sorry, I don't understand that command. Try todo, deadline, event, list, mark, unmark, delete, or bye.");
+            throw new DukeException("Sorry, I don't understand that command. Try todo, deadline, event, "
+                    + "list, mark, unmark, delete, or bye.");
         }
     }
 
@@ -113,7 +114,8 @@ public class Parser {
         int toIndex = details.indexOf(TO_SEPARATOR, fromIndex + FROM_SEPARATOR.length());
 
         if (fromIndex < 0 || toIndex < 0 || toIndex < fromIndex) {
-            throw new DukeException("An event needs /from and /to. For example: event meeting /from 2019-10-15 /to 2019-10-16");
+            throw new DukeException("An event needs /from and /to. For example: event meeting "
+                    + "/from 2019-10-15 /to 2019-10-16");
         }
 
         String description = details.substring(0, fromIndex).trim();
@@ -154,7 +156,8 @@ public class Parser {
         }
 
         if (taskNumber < 1 || taskNumber > taskCount) {
-            throw new DukeException("Task " + taskNumber + " does not exist. Use list to see the available task numbers.");
+            throw new DukeException("Task " + taskNumber
+                    + " does not exist. Use list to see the available task numbers.");
         }
 
         return taskNumber - 1;
