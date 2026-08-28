@@ -1,6 +1,5 @@
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
-import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
@@ -26,7 +25,7 @@ public class Duke {
     private static final String TO_SEPARATOR = "/to";
 
     private static final Ui ui = new Ui();
-    private static final ArrayList<Task> tasks = new ArrayList<>();
+    private static TaskList tasks;
 
     /**
      * Greets the user and handles commands until the user enters "bye".
@@ -42,9 +41,10 @@ public class Duke {
      */
     private static void loadTasks() {
         try {
-            tasks.addAll(Storage.loadTasks());
+            tasks = new TaskList(Storage.loadTasks());
         } catch (DukeException e) {
             ui.showError(e.getMessage());
+            tasks = new TaskList();
         }
     }
 
@@ -188,7 +188,7 @@ public class Duke {
      */
     private static void addTask(Task task) throws DukeException {
         tasks.add(task);
-        Storage.saveTasks(tasks);
+        Storage.saveTasks(tasks.getTasks());
 
         ui.showTaskAdded(task, tasks.size());
     }
@@ -198,8 +198,8 @@ public class Duke {
      */
     private static void deleteTask(String command) throws DukeException {
         int taskIndex = parseTaskIndex(command, DELETE_COMMAND, DELETE_COMMAND_PREFIX);
-        Task deletedTask = tasks.remove(taskIndex);
-        Storage.saveTasks(tasks);
+        Task deletedTask = tasks.delete(taskIndex);
+        Storage.saveTasks(tasks.getTasks());
 
         ui.showTaskDeleted(deletedTask, tasks.size());
     }
@@ -210,10 +210,10 @@ public class Duke {
     private static void markTask(String command) throws DukeException {
         int taskIndex = parseTaskIndex(command, MARK_COMMAND, MARK_COMMAND_PREFIX);
 
-        tasks.get(taskIndex).markAsDone();
-        Storage.saveTasks(tasks);
+        Task task = tasks.mark(taskIndex);
+        Storage.saveTasks(tasks.getTasks());
 
-        ui.showTaskMarked(tasks.get(taskIndex));
+        ui.showTaskMarked(task);
     }
 
     /**
@@ -222,10 +222,10 @@ public class Duke {
     private static void unmarkTask(String command) throws DukeException {
         int taskIndex = parseTaskIndex(command, UNMARK_COMMAND, UNMARK_COMMAND_PREFIX);
 
-        tasks.get(taskIndex).markAsNotDone();
-        Storage.saveTasks(tasks);
+        Task task = tasks.unmark(taskIndex);
+        Storage.saveTasks(tasks.getTasks());
 
-        ui.showTaskUnmarked(tasks.get(taskIndex));
+        ui.showTaskUnmarked(task);
     }
 
     /**

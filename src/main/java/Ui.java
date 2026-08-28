@@ -1,5 +1,3 @@
-import java.util.ArrayList;
-
 /**
  * Handles all messages shown to the user.
  */
@@ -82,7 +80,7 @@ public class Ui {
     /**
      * Prints all stored tasks in the order they were added.
      */
-    public void showTaskList(ArrayList<Task> tasks) {
+    public void showTaskList(TaskList tasks) {
         System.out.println(LINE);
         System.out.println("Here are the tasks in your list:");
         for (int i = 0; i < tasks.size(); i++) {
