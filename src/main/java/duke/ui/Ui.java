@@ -42,6 +42,9 @@ public class Ui {
 
     /**
      * Prints a confirmation after adding a task.
+     *
+     * @param task Task that was added.
+     * @param taskCount Number of tasks after adding the task.
      */
     public void showTaskAdded(Task task, int taskCount) {
         System.out.println(LINE);
@@ -53,6 +56,9 @@ public class Ui {
 
     /**
      * Prints a confirmation after deleting a task.
+     *
+     * @param deletedTask Task that was deleted.
+     * @param taskCount Number of tasks after deleting the task.
      */
     public void showTaskDeleted(Task deletedTask, int taskCount) {
         System.out.println(LINE);

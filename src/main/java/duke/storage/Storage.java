@@ -25,6 +25,8 @@ public class Storage {
 
     /**
      * Creates a storage helper that reads from and writes to the given file path.
+     *
+     * @param filePath Path of the data file used to save tasks.
      */
     public Storage(String filePath) {
         dataFile = Paths.get(filePath);
@@ -33,6 +35,9 @@ public class Storage {
     /**
      * Loads saved tasks from the data file. If the file does not exist yet,
      * the chatbot starts with an empty task list.
+     *
+     * @return Tasks loaded from the data file.
+     * @throws DukeException If the data file cannot be read or has invalid content.
      */
     public ArrayList<Task> loadTasks() throws DukeException {
         ArrayList<Task> loadedTasks = new ArrayList<>();
@@ -59,6 +64,9 @@ public class Storage {
     /**
      * Saves the current tasks to the data file, creating the data folder first
      * if needed.
+     *
+     * @param tasks Tasks to save.
+     * @throws DukeException If the data file cannot be written.
      */
     public void saveTasks(ArrayList<Task> tasks) throws DukeException {
         try {
