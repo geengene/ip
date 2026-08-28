@@ -1,3 +1,5 @@
+package duke.task;
+
 /**
  * Represents one task in the chatbot's task list.
  */

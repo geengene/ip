@@ -66,7 +66,7 @@ def parse_test_plan() -> list[TestCase]:
 
 
 def compile_program() -> None:
-    source_files = sorted(str(path) for path in (PROJECT_ROOT / "src" / "main" / "java").glob("*.java"))
+    source_files = sorted(str(path) for path in (PROJECT_ROOT / "src" / "main" / "java").rglob("*.java"))
     subprocess.run(["javac", "-d", str(BUILD_DIR), *source_files], check=True, cwd=PROJECT_ROOT)
 
 
@@ -97,7 +97,7 @@ def read_data_file() -> str:
 
 def run_case(test_case: TestCase) -> str:
     result = subprocess.run(
-        ["java", "-cp", str(BUILD_DIR), "Duke"],
+        ["java", "-cp", str(BUILD_DIR), "duke.Duke"],
         input=test_case.inputs + "\n",
         text=True,
         capture_output=True,

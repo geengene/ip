@@ -13,7 +13,7 @@ Prerequisites: JDK 25, update Intellij to the most recent version.
    1. If there are any further prompts, accept the defaults.
 1. Configure the project to use **JDK 25** (not other versions) as explained in [here](https://www.jetbrains.com/help/idea/sdk.html#set-up-jdk).<br>
    In the same dialog, set the **Project language level** field to the `SDK default` option.
-1. After that, locate the `src/main/java/Duke.java` file, right-click it, and choose `Run Duke.main()` (if the code editor is showing compile errors, try restarting the IDE). If the setup is correct, you should see something like the below as the output:
+1. After that, locate the `src/main/java/duke/Duke.java` file, right-click it, and choose `Run Duke.main()` (if the code editor is showing compile errors, try restarting the IDE). If the setup is correct, you should see something like the below as the output:
    ```
    ____________________________________________________________
    geen
@@ -28,17 +28,17 @@ Prerequisites: JDK 25, update Intellij to the most recent version.
    Now you have 1 tasks in the list.
    ____________________________________________________________
 
-   deadline return book /by Sunday
+   deadline return book /by 2019-10-15
    ____________________________________________________________
    Got it. I've added this task:
-     [D][ ] return book (by: Sunday)
+     [D][ ] return book (by: Oct 15 2019)
    Now you have 2 tasks in the list.
    ____________________________________________________________
 
-   event project meeting /from Mon 2pm /to 4pm
+   event project meeting /from 2019-10-15 /to 2019-10-16
    ____________________________________________________________
    Got it. I've added this task:
-     [E][ ] project meeting (from: Mon 2pm to: 4pm)
+     [E][ ] project meeting (from: Oct 15 2019 to: Oct 16 2019)
    Now you have 3 tasks in the list.
    ____________________________________________________________
 
@@ -52,14 +52,14 @@ Prerequisites: JDK 25, update Intellij to the most recent version.
    ____________________________________________________________
    Here are the tasks in your list:
    1.[T][X] read book
-   2.[D][ ] return book (by: Sunday)
-   3.[E][ ] project meeting (from: Mon 2pm to: 4pm)
+   2.[D][ ] return book (by: Oct 15 2019)
+   3.[E][ ] project meeting (from: Oct 15 2019 to: Oct 16 2019)
    ____________________________________________________________
 
    delete 2
    ____________________________________________________________
    Noted. I've removed this task:
-     [D][ ] return book (by: Sunday)
+     [D][ ] return book (by: Oct 15 2019)
    Now you have 2 tasks in the list.
    ____________________________________________________________
 
@@ -73,7 +73,7 @@ Prerequisites: JDK 25, update Intellij to the most recent version.
    ____________________________________________________________
    Here are the tasks in your list:
    1.[T][ ] read book
-   2.[E][ ] project meeting (from: Mon 2pm to: 4pm)
+   2.[E][ ] project meeting (from: Oct 15 2019 to: Oct 16 2019)
    ____________________________________________________________
 
    todo
