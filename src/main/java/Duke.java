@@ -1,3 +1,5 @@
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -126,7 +128,7 @@ public class Duke {
         int byIndex = details.indexOf(BY_SEPARATOR);
 
         if (byIndex < 0) {
-            throw new DukeException("A deadline needs /by. For example: deadline submit report /by Sunday");
+            throw new DukeException("A deadline needs /by. For example: deadline submit report /by 2019-10-15");
         }
 
         String description = details.substring(0, byIndex).trim();
@@ -135,10 +137,10 @@ public class Duke {
             throw new DukeException("A deadline needs a description before /by.");
         }
         if (by.isEmpty()) {
-            throw new DukeException("A deadline needs a time after /by.");
+            throw new DukeException("A deadline needs a date after /by.");
         }
 
-        addTask(new Deadline(description, by));
+        addTask(new Deadline(description, parseDate(by, "deadline submit report /by 2019-10-15")));
     }
 
     /**
@@ -150,7 +152,7 @@ public class Duke {
         int toIndex = details.indexOf(TO_SEPARATOR, fromIndex + FROM_SEPARATOR.length());
 
         if (fromIndex < 0 || toIndex < 0 || toIndex < fromIndex) {
-            throw new DukeException("An event needs /from and /to. For example: event meeting /from Mon 2pm /to 4pm");
+            throw new DukeException("An event needs /from and /to. For example: event meeting /from 2019-10-15 /to 2019-10-16");
         }
 
         String description = details.substring(0, fromIndex).trim();
@@ -160,13 +162,27 @@ public class Duke {
             throw new DukeException("An event needs a description before /from.");
         }
         if (from.isEmpty()) {
-            throw new DukeException("An event needs a start time after /from.");
+            throw new DukeException("An event needs a start date after /from.");
         }
         if (to.isEmpty()) {
-            throw new DukeException("An event needs an end time after /to.");
+            throw new DukeException("An event needs an end date after /to.");
         }
 
-        addTask(new Event(description, from, to));
+        addTask(new Event(
+                description,
+                parseDate(from, "event meeting /from 2019-10-15 /to 2019-10-16"),
+                parseDate(to, "event meeting /from 2019-10-15 /to 2019-10-16")));
+    }
+
+    /**
+     * Parses a date typed by the user in yyyy-MM-dd format.
+     */
+    private static LocalDate parseDate(String dateText, String exampleCommand) throws DukeException {
+        try {
+            return LocalDate.parse(dateText);
+        } catch (DateTimeParseException e) {
+            throw new DukeException("Dates must be in yyyy-MM-dd format. For example: " + exampleCommand);
+        }
     }
 
     /**

@@ -1,4 +1,6 @@
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -79,18 +81,21 @@ public class Storage {
         if (type.equals("T") && fields.size() == 3) {
             task = new ToDo(description);
         } else if (type.equals("D") && fields.size() == 4) {
-            String by = unescape(fields.get(3).trim(), lineNumber);
-            if (by.isEmpty()) {
-                throw new DukeException("The saved deadline on line " + lineNumber + " has no time.");
+            String byText = unescape(fields.get(3).trim(), lineNumber);
+            if (byText.isEmpty()) {
+                throw new DukeException("The saved deadline on line " + lineNumber + " has no date.");
             }
-            task = new Deadline(description, by);
+            task = new Deadline(description, parseSavedDate(byText, lineNumber, "deadline"));
         } else if (type.equals("E") && fields.size() == 5) {
-            String from = unescape(fields.get(3).trim(), lineNumber);
-            String to = unescape(fields.get(4).trim(), lineNumber);
-            if (from.isEmpty() || to.isEmpty()) {
-                throw new DukeException("The saved event on line " + lineNumber + " has missing times.");
+            String fromText = unescape(fields.get(3).trim(), lineNumber);
+            String toText = unescape(fields.get(4).trim(), lineNumber);
+            if (fromText.isEmpty() || toText.isEmpty()) {
+                throw new DukeException("The saved event on line " + lineNumber + " has missing dates.");
             }
-            task = new Event(description, from, to);
+            task = new Event(
+                    description,
+                    parseSavedDate(fromText, lineNumber, "event"),
+                    parseSavedDate(toText, lineNumber, "event"));
         } else {
             throw new DukeException("The saved task on line " + lineNumber + " has an invalid format.");
         }
@@ -125,7 +130,12 @@ public class Storage {
         }
         if (task instanceof Deadline) {
             Deadline deadline = (Deadline) task;
-            return String.join(SEPARATOR, "D", doneValue, escape(deadline.getDescription()), escape(deadline.getBy()));
+            return String.join(
+                    SEPARATOR,
+                    "D",
+                    doneValue,
+                    escape(deadline.getDescription()),
+                    deadline.getBy().toString());
         }
         if (task instanceof Event) {
             Event event = (Event) task;
@@ -134,11 +144,22 @@ public class Storage {
                     "E",
                     doneValue,
                     escape(event.getDescription()),
-                    escape(event.getFrom()),
-                    escape(event.getTo()));
+                    event.getFrom().toString(),
+                    event.getTo().toString());
         }
 
         throw new DukeException("I could not save an unknown task type.");
+    }
+
+    /**
+     * Parses a date stored in the data file in yyyy-MM-dd format.
+     */
+    private static LocalDate parseSavedDate(String dateText, int lineNumber, String taskType) throws DukeException {
+        try {
+            return LocalDate.parse(dateText);
+        } catch (DateTimeParseException e) {
+            throw new DukeException("The saved " + taskType + " on line " + lineNumber + " has an invalid date.");
+        }
     }
 
     /**
