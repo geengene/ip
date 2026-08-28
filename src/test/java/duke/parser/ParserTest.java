@@ -1,13 +1,14 @@
 package duke.parser;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import org.junit.jupiter.api.Test;
+
 import duke.exception.DukeException;
 import duke.task.Deadline;
 import duke.task.Event;
 import duke.task.ToDo;
-import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Tests command parsing behavior.
@@ -17,7 +18,8 @@ public class ParserTest {
     public void parseCommandType_knownCommands_returnsCorrectType() throws DukeException {
         assertEquals(Parser.CommandType.TODO, Parser.parseCommandType("todo read book"));
         assertEquals(Parser.CommandType.DEADLINE, Parser.parseCommandType("deadline return book /by 2019-10-15"));
-        assertEquals(Parser.CommandType.EVENT, Parser.parseCommandType("event meeting /from 2019-10-15 /to 2019-10-16"));
+        assertEquals(Parser.CommandType.EVENT,
+                Parser.parseCommandType("event meeting /from 2019-10-15 /to 2019-10-16"));
         assertEquals(Parser.CommandType.LIST, Parser.parseCommandType("list"));
         assertEquals(Parser.CommandType.MARK, Parser.parseCommandType("mark 1"));
         assertEquals(Parser.CommandType.UNMARK, Parser.parseCommandType("unmark 1"));
@@ -29,7 +31,8 @@ public class ParserTest {
     public void parseCommandType_unknownCommand_throwsException() {
         DukeException exception = assertThrows(DukeException.class, () -> Parser.parseCommandType("hello"));
         assertEquals(
-                "Sorry, I don't understand that command. Try todo, deadline, event, list, mark, unmark, delete, or bye.",
+                "Sorry, I don't understand that command. Try todo, deadline, event, "
+                        + "list, mark, unmark, delete, or bye.",
                 exception.getMessage());
     }
 
