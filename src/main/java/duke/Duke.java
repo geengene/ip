@@ -95,6 +95,8 @@ public class Duke {
             markTask(command);
         } else if (commandType == Parser.CommandType.UNMARK) {
             unmarkTask(command);
+        } else if (commandType == Parser.CommandType.FIND) {
+            findTasks(command);
         } else if (commandType == Parser.CommandType.TODO) {
             addToDo(command);
         } else if (commandType == Parser.CommandType.DEADLINE) {
@@ -111,6 +113,14 @@ public class Duke {
      */
     private void addToDo(String command) throws DukeException {
         addTask(Parser.parseToDo(command));
+    }
+
+    /**
+     * Finds tasks matching the keyword in the user command.
+     */
+    private void findTasks(String command) throws DukeException {
+        String keyword = Parser.parseFindKeyword(command);
+        ui.showMatchingTasks(tasks.find(keyword));
     }
 
     /**

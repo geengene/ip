@@ -20,6 +20,8 @@ public class Parser {
     private static final String MARK_COMMAND_PREFIX = "mark ";
     private static final String UNMARK_COMMAND = "unmark";
     private static final String UNMARK_COMMAND_PREFIX = "unmark ";
+    private static final String FIND_COMMAND = "find";
+    private static final String FIND_COMMAND_PREFIX = "find ";
     private static final String TODO_COMMAND = "todo";
     private static final String TODO_COMMAND_PREFIX = "todo ";
     private static final String DEADLINE_COMMAND = "deadline";
@@ -39,6 +41,7 @@ public class Parser {
         DELETE,
         MARK,
         UNMARK,
+        FIND,
         TODO,
         DEADLINE,
         EVENT
@@ -62,6 +65,8 @@ public class Parser {
             return CommandType.MARK;
         } else if (command.equals(UNMARK_COMMAND) || command.startsWith(UNMARK_COMMAND_PREFIX)) {
             return CommandType.UNMARK;
+        } else if (command.equals(FIND_COMMAND) || command.startsWith(FIND_COMMAND_PREFIX)) {
+            return CommandType.FIND;
         } else if (command.equals(TODO_COMMAND) || command.startsWith(TODO_COMMAND_PREFIX)) {
             return CommandType.TODO;
         } else if (command.equals(DEADLINE_COMMAND) || command.startsWith(DEADLINE_COMMAND_PREFIX)) {
@@ -69,9 +74,25 @@ public class Parser {
         } else if (command.equals(EVENT_COMMAND) || command.startsWith(EVENT_COMMAND_PREFIX)) {
             return CommandType.EVENT;
         } else {
-            throw new DukeException("Sorry, I don't understand that command. Try todo, deadline, event, "
-                    + "list, mark, unmark, delete, or bye.");
+            throw new DukeException("Sorry, I don't understand that command. Try todo, deadline, event, list, "
+                    + "mark, unmark, delete, find, or bye.");
         }
+    }
+
+    /**
+     * Returns the keyword from a find command.
+     *
+     * @param command Full find command entered by the user.
+     * @return Keyword to search for in task descriptions.
+     * @throws DukeException If the keyword is missing.
+     */
+    public static String parseFindKeyword(String command) throws DukeException {
+        String keyword = getCommandDetails(command, FIND_COMMAND, FIND_COMMAND_PREFIX);
+        if (keyword.isEmpty()) {
+            throw new DukeException("A find command needs a keyword. For example: find book");
+        }
+
+        return keyword;
     }
 
     /**

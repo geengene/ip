@@ -24,6 +24,7 @@ public class ParserTest {
         assertEquals(Parser.CommandType.MARK, Parser.parseCommandType("mark 1"));
         assertEquals(Parser.CommandType.UNMARK, Parser.parseCommandType("unmark 1"));
         assertEquals(Parser.CommandType.DELETE, Parser.parseCommandType("delete 1"));
+        assertEquals(Parser.CommandType.FIND, Parser.parseCommandType("find book"));
         assertEquals(Parser.CommandType.EXIT, Parser.parseCommandType("bye"));
     }
 
@@ -31,9 +32,21 @@ public class ParserTest {
     public void parseCommandType_unknownCommand_throwsException() {
         DukeException exception = assertThrows(DukeException.class, () -> Parser.parseCommandType("hello"));
         assertEquals(
-                "Sorry, I don't understand that command. Try todo, deadline, event, "
-                        + "list, mark, unmark, delete, or bye.",
+                "Sorry, I don't understand that command. Try todo, deadline, event, list, "
+                        + "mark, unmark, delete, find, or bye.",
                 exception.getMessage());
+    }
+
+    @Test
+    public void parseFindKeyword_validCommand_returnsKeyword() throws DukeException {
+        assertEquals("book", Parser.parseFindKeyword("find book"));
+    }
+
+    @Test
+    public void parseFindKeyword_missingKeyword_throwsException() {
+        DukeException exception = assertThrows(DukeException.class, () -> Parser.parseFindKeyword("find"));
+
+        assertEquals("A find command needs a keyword. For example: find book", exception.getMessage());
     }
 
     @Test
