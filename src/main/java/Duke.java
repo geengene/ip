@@ -7,9 +7,6 @@ import java.util.Scanner;
  * Entry point for the geen chatbot.
  */
 public class Duke {
-    private static final String LINE = "____________________________________________________________";
-    private static final String CHATBOT_NAME = "geen";
-    private static final String CHATBOT_BANNER = CHATBOT_NAME;
     private static final String EXIT_COMMAND = "bye";
     private static final String LIST_COMMAND = "list";
     private static final String DELETE_COMMAND = "delete";
@@ -28,6 +25,7 @@ public class Duke {
     private static final String FROM_SEPARATOR = "/from";
     private static final String TO_SEPARATOR = "/to";
 
+    private static final Ui ui = new Ui();
     private static final ArrayList<Task> tasks = new ArrayList<>();
 
     /**
@@ -35,7 +33,7 @@ public class Duke {
      */
     public static void main(String[] args) {
         loadTasks();
-        printGreeting();
+        ui.showGreeting();
         handleCommands();
     }
 
@@ -46,19 +44,8 @@ public class Duke {
         try {
             tasks.addAll(Storage.loadTasks());
         } catch (DukeException e) {
-            printError(e.getMessage());
+            ui.showError(e.getMessage());
         }
-    }
-
-    /**
-     * Prints the opening chatbot message.
-     */
-    private static void printGreeting() {
-        System.out.println(LINE);
-        System.out.println(CHATBOT_BANNER);
-        System.out.println("Hello! I'm " + CHATBOT_NAME + ".");
-        System.out.println("What can I do for you?");
-        System.out.println(LINE);
     }
 
     /**
@@ -72,13 +59,13 @@ public class Duke {
 
             try {
                 if (command.equals(EXIT_COMMAND)) {
-                    printGoodbye();
+                    ui.showGoodbye();
                     break;
                 }
 
                 handleCommand(command);
             } catch (DukeException e) {
-                printError(e.getMessage());
+                ui.showError(e.getMessage());
             }
         }
 
@@ -203,11 +190,7 @@ public class Duke {
         tasks.add(task);
         Storage.saveTasks(tasks);
 
-        System.out.println(LINE);
-        System.out.println("Got it. I've added this task:");
-        System.out.println("  " + task);
-        System.out.println("Now you have " + tasks.size() + " tasks in the list.");
-        System.out.println(LINE);
+        ui.showTaskAdded(task, tasks.size());
     }
 
     /**
@@ -218,11 +201,7 @@ public class Duke {
         Task deletedTask = tasks.remove(taskIndex);
         Storage.saveTasks(tasks);
 
-        System.out.println(LINE);
-        System.out.println("Noted. I've removed this task:");
-        System.out.println("  " + deletedTask);
-        System.out.println("Now you have " + tasks.size() + " tasks in the list.");
-        System.out.println(LINE);
+        ui.showTaskDeleted(deletedTask, tasks.size());
     }
 
     /**
@@ -234,10 +213,7 @@ public class Duke {
         tasks.get(taskIndex).markAsDone();
         Storage.saveTasks(tasks);
 
-        System.out.println(LINE);
-        System.out.println("Nice! I've marked this task as done:");
-        System.out.println("  " + tasks.get(taskIndex));
-        System.out.println(LINE);
+        ui.showTaskMarked(tasks.get(taskIndex));
     }
 
     /**
@@ -249,10 +225,7 @@ public class Duke {
         tasks.get(taskIndex).markAsNotDone();
         Storage.saveTasks(tasks);
 
-        System.out.println(LINE);
-        System.out.println("OK, I've marked this task as not done yet:");
-        System.out.println("  " + tasks.get(taskIndex));
-        System.out.println(LINE);
+        ui.showTaskUnmarked(tasks.get(taskIndex));
     }
 
     /**
@@ -282,29 +255,6 @@ public class Duke {
      * Prints all stored tasks in the order they were added.
      */
     private static void printTaskList() {
-        System.out.println(LINE);
-        System.out.println("Here are the tasks in your list:");
-        for (int i = 0; i < tasks.size(); i++) {
-            System.out.println((i + 1) + "." + tasks.get(i));
-        }
-        System.out.println(LINE);
-    }
-
-    /**
-     * Prints the closing chatbot message.
-     */
-    private static void printGoodbye() {
-        System.out.println(LINE);
-        System.out.println("Bye. Hope to see you again soon!");
-        System.out.println(LINE);
-    }
-
-    /**
-     * Prints an error message caused by invalid user input.
-     */
-    private static void printError(String message) {
-        System.out.println(LINE);
-        System.out.println("OOPS!!! " + message);
-        System.out.println(LINE);
+        ui.showTaskList(tasks);
     }
 }
