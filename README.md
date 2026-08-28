@@ -93,3 +93,27 @@ Prerequisites: JDK 25, update Intellij to the most recent version.
    ```
 
 **Warning:** Keep the `src\main\java` folder as the root folder for Java files (i.e., don't rename those folders or move Java files to another folder outside of this folder path), as this is the default location some tools (e.g., Gradle) expect to find Java files.
+
+## Creating an executable JAR
+
+Run the following command from the project root:
+
+```bash
+./gradlew shadowJar
+```
+
+The executable JAR file will be created at:
+
+```text
+build/libs/duke.jar
+```
+
+To test it as a user would, copy `duke.jar` into an empty folder, open a command
+window in that folder, and run:
+
+```bash
+java -jar "duke.jar"
+```
+
+Do not commit `build/libs/duke.jar`; it is a generated build output. If the JAR
+needs to be distributed, attach it to a GitHub release instead.
