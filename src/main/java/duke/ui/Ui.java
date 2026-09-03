@@ -15,29 +15,21 @@ public class Ui {
      * Prints the opening chatbot message.
      */
     public void showGreeting() {
-        System.out.println(LINE);
-        System.out.println(CHATBOT_BANNER);
-        System.out.println("Hello! I'm " + CHATBOT_NAME + ".");
-        System.out.println("What can I do for you?");
-        System.out.println(LINE);
+        System.out.println(formatGreeting());
     }
 
     /**
      * Prints the closing chatbot message.
      */
     public void showGoodbye() {
-        System.out.println(LINE);
-        System.out.println("Bye. Hope to see you again soon!");
-        System.out.println(LINE);
+        System.out.println(formatGoodbye());
     }
 
     /**
      * Prints an error message caused by invalid user input or storage problems.
      */
     public void showError(String message) {
-        System.out.println(LINE);
-        System.out.println("OOPS!!! " + message);
-        System.out.println(LINE);
+        System.out.println(formatError(message));
     }
 
     /**
@@ -47,11 +39,7 @@ public class Ui {
      * @param taskCount Number of tasks after adding the task.
      */
     public void showTaskAdded(Task task, int taskCount) {
-        System.out.println(LINE);
-        System.out.println("Got it. I've added this task:");
-        System.out.println("  " + task);
-        System.out.println("Now you have " + taskCount + " tasks in the list.");
-        System.out.println(LINE);
+        System.out.println(formatTaskAdded(task, taskCount));
     }
 
     /**
@@ -61,54 +49,134 @@ public class Ui {
      * @param taskCount Number of tasks after deleting the task.
      */
     public void showTaskDeleted(Task deletedTask, int taskCount) {
-        System.out.println(LINE);
-        System.out.println("Noted. I've removed this task:");
-        System.out.println("  " + deletedTask);
-        System.out.println("Now you have " + taskCount + " tasks in the list.");
-        System.out.println(LINE);
+        System.out.println(formatTaskDeleted(deletedTask, taskCount));
     }
 
     /**
      * Prints a confirmation after marking a task as done.
      */
     public void showTaskMarked(Task task) {
-        System.out.println(LINE);
-        System.out.println("Nice! I've marked this task as done:");
-        System.out.println("  " + task);
-        System.out.println(LINE);
+        System.out.println(formatTaskMarked(task));
     }
 
     /**
      * Prints a confirmation after marking a task as not done.
      */
     public void showTaskUnmarked(Task task) {
-        System.out.println(LINE);
-        System.out.println("OK, I've marked this task as not done yet:");
-        System.out.println("  " + task);
-        System.out.println(LINE);
+        System.out.println(formatTaskUnmarked(task));
     }
 
     /**
      * Prints all stored tasks in the order they were added.
      */
     public void showTaskList(TaskList tasks) {
-        System.out.println(LINE);
-        System.out.println("Here are the tasks in your list:");
-        for (int i = 0; i < tasks.size(); i++) {
-            System.out.println((i + 1) + "." + tasks.get(i));
-        }
-        System.out.println(LINE);
+        System.out.println(formatTaskList(tasks));
     }
 
     /**
      * Prints tasks matching a find keyword.
      */
     public void showMatchingTasks(TaskList tasks) {
-        System.out.println(LINE);
-        System.out.println("Here are the matching tasks in your list:");
-        for (int i = 0; i < tasks.size(); i++) {
-            System.out.println((i + 1) + "." + tasks.get(i));
-        }
-        System.out.println(LINE);
+        System.out.println(formatMatchingTasks(tasks));
     }
+
+    /**
+     * Returns the opening chatbot message.
+     */
+    public String formatGreeting() {
+        return LINE + "\n"
+                + CHATBOT_BANNER + "\n"
+                + "Hello! I'm " + CHATBOT_NAME + ".\n"
+                + "What can I do for you?\n"
+                + LINE;
+    }
+
+    /**
+     * Returns the closing chatbot message.
+     */
+    public String formatGoodbye() {
+        return LINE + "\n"
+                + "Bye. Hope to see you again soon!\n"
+                + LINE;
+    }
+
+    /**
+     * Returns an error message caused by invalid user input or storage problems.
+     */
+    public String formatError(String message) {
+        return LINE + "\n"
+                + "OOPS!!! " + message + "\n"
+                + LINE;
+    }
+
+    /**
+     * Returns a confirmation after adding a task.
+     */
+    public String formatTaskAdded(Task task, int taskCount) {
+        return LINE + "\n"
+                + "Got it. I've added this task:\n"
+                + "  " + task + "\n"
+                + "Now you have " + taskCount + " tasks in the list.\n"
+                + LINE;
+    }
+
+    /**
+     * Returns a confirmation after deleting a task.
+     */
+    public String formatTaskDeleted(Task deletedTask, int taskCount) {
+        return LINE + "\n"
+                + "Noted. I've removed this task:\n"
+                + "  " + deletedTask + "\n"
+                + "Now you have " + taskCount + " tasks in the list.\n"
+                + LINE;
+    }
+
+    /**
+     * Returns a confirmation after marking a task as done.
+     */
+    public String formatTaskMarked(Task task) {
+        return LINE + "\n"
+                + "Nice! I've marked this task as done:\n"
+                + "  " + task + "\n"
+                + LINE;
+    }
+
+    /**
+     * Returns a confirmation after marking a task as not done.
+     */
+    public String formatTaskUnmarked(Task task) {
+        return LINE + "\n"
+                + "OK, I've marked this task as not done yet:\n"
+                + "  " + task + "\n"
+                + LINE;
+    }
+
+    /**
+     * Returns all stored tasks in the order they were added.
+     */
+    public String formatTaskList(TaskList tasks) {
+        StringBuilder message = new StringBuilder();
+        message.append(LINE).append("\n");
+        message.append("Here are the tasks in your list:");
+        for (int i = 0; i < tasks.size(); i++) {
+            message.append("\n").append(i + 1).append(".").append(tasks.get(i));
+        }
+        message.append("\n").append(LINE);
+        return message.toString();
+    }
+
+    /**
+     * Returns tasks matching a find keyword.
+     */
+    public String formatMatchingTasks(TaskList tasks) {
+        StringBuilder message = new StringBuilder();
+        message.append(LINE).append("\n");
+        message.append("Here are the matching tasks in your list:");
+        for (int i = 0; i < tasks.size(); i++) {
+            message.append("\n").append(i + 1).append(".").append(tasks.get(i));
+        }
+        message.append("\n").append(LINE);
+        return message.toString();
+    }
+
 }

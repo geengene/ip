@@ -66,7 +66,11 @@ def parse_test_plan() -> list[TestCase]:
 
 
 def compile_program() -> None:
-    source_files = sorted(str(path) for path in (PROJECT_ROOT / "src" / "main" / "java").rglob("*.java"))
+    source_files = sorted(
+        str(path)
+        for path in (PROJECT_ROOT / "src" / "main" / "java").rglob("*.java")
+        if path.name not in {"Launcher.java", "Main.java", "MainWindow.java"}
+    )
     subprocess.run(["javac", "-d", str(BUILD_DIR), *source_files], check=True, cwd=PROJECT_ROOT)
 
 

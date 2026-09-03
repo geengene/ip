@@ -13,7 +13,7 @@ Prerequisites: JDK 25, update Intellij to the most recent version.
    1. If there are any further prompts, accept the defaults.
 1. Configure the project to use **JDK 25** (not other versions) as explained in [here](https://www.jetbrains.com/help/idea/sdk.html#set-up-jdk).<br>
    In the same dialog, set the **Project language level** field to the `SDK default` option.
-1. After that, locate the `src/main/java/duke/Duke.java` file, right-click it, and choose `Run Duke.main()` (if the code editor is showing compile errors, try restarting the IDE). If the setup is correct, you should see something like the below as the output:
+1. After that, run `./gradlew run` from the project root to start the JavaFX GUI. To try the command-line version instead, locate the `src/main/java/duke/Duke.java` file, right-click it, and choose `Run Duke.main()` (if the code editor is showing compile errors, try restarting the IDE). If the command-line setup is correct, you should see something like the below as the output:
    ```
    ____________________________________________________________
    geen
@@ -56,6 +56,13 @@ Prerequisites: JDK 25, update Intellij to the most recent version.
    3.[E][ ] project meeting (from: Oct 15 2019 to: Oct 16 2019)
    ____________________________________________________________
 
+   find book
+   ____________________________________________________________
+   Here are the matching tasks in your list:
+   1.[T][X] read book
+   2.[D][ ] return book (by: Oct 15 2019)
+   ____________________________________________________________
+
    delete 2
    ____________________________________________________________
    Noted. I've removed this task:
@@ -83,7 +90,7 @@ Prerequisites: JDK 25, update Intellij to the most recent version.
 
    blah
    ____________________________________________________________
-   OOPS!!! Sorry, I don't understand that command. Try todo, deadline, event, list, mark, unmark, delete, or bye.
+   OOPS!!! Sorry, I don't understand that command. Try todo, deadline, event, list, mark, unmark, delete, find, or bye.
    ____________________________________________________________
 
    bye
@@ -117,3 +124,20 @@ java -jar "duke.jar"
 
 Do not commit `build/libs/duke.jar`; it is a generated build output. If the JAR
 needs to be distributed, attach it to a GitHub release instead.
+
+## Running the GUI
+
+To run the JavaFX GUI from the command line, use:
+
+```bash
+./gradlew run
+```
+
+In IntelliJ, run the `duke.Launcher` class to start the GUI. The original
+`duke.Duke` class still runs the command-line version.
+
+To run the command-line version through Gradle, use:
+
+```bash
+./gradlew runCli
+```
