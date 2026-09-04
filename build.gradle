@@ -2,6 +2,7 @@ plugins {
     id 'java'
     id 'application'
     id 'com.gradleup.shadow' version '9.5.1'
+    id 'org.openjfx.javafxplugin' version '0.1.0'
 }
 
 java {
@@ -22,6 +23,11 @@ dependencies {
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher:1.14.4'
 }
 
+javafx {
+    version = '25.0.1'
+    modules = ['javafx.controls', 'javafx.fxml']
+}
+
 test {
     useJUnitPlatform()
 
@@ -37,7 +43,7 @@ test {
 }
 
 application {
-    mainClass = 'duke.Duke'
+    mainClass = 'duke.Launcher'
 }
 
 jar {
@@ -52,5 +58,21 @@ shadowJar {
 }
 
 run {
+    jvmArgs '--enable-native-access=javafx.graphics'
+}
+
+tasks.register('runCli', JavaExec) {
+    group = 'application'
+    description = 'Runs the command-line chatbot.'
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass = 'duke.Duke'
     standardInput = System.in
+}
+
+tasks.register('runGui', JavaExec) {
+    group = 'application'
+    description = 'Runs the JavaFX chatbot GUI.'
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass = 'duke.Launcher'
+    jvmArgs '--enable-native-access=javafx.graphics'
 }
