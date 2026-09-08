@@ -58,6 +58,7 @@ shadowJar {
 }
 
 run {
+    enableAssertions = true
     jvmArgs '--enable-native-access=javafx.graphics'
 }
 
@@ -66,6 +67,7 @@ tasks.register('runCli', JavaExec) {
     description = 'Runs the command-line chatbot.'
     classpath = sourceSets.main.runtimeClasspath
     mainClass = 'duke.Duke'
+    enableAssertions = true
     standardInput = System.in
 }
 
@@ -74,5 +76,6 @@ tasks.register('runGui', JavaExec) {
     description = 'Runs the JavaFX chatbot GUI.'
     classpath = sourceSets.main.runtimeClasspath
     mainClass = 'duke.Launcher'
+    enableAssertions = true
     jvmArgs '--enable-native-access=javafx.graphics'
 }

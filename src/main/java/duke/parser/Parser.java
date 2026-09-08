@@ -203,13 +203,17 @@ public class Parser {
                     + " does not exist. Use list to see the available task numbers.");
         }
 
-        return taskNumber - 1;
+        int taskIndex = taskNumber - 1;
+        assert taskIndex >= 0 && taskIndex < taskCount : "Parsed task index should be within the task list";
+        return taskIndex;
     }
 
     /**
      * Returns the details typed after a command word.
      */
     private static String getCommandDetails(String command, String commandWord, String commandPrefix) {
+        assert command.equals(commandWord) || command.startsWith(commandPrefix)
+                : "Command should match its expected word or prefix";
         if (command.equals(commandWord)) {
             return "";
         }
@@ -221,6 +225,10 @@ public class Parser {
      * Returns the user-facing command word for commands that need a task number.
      */
     private static String getCommandWord(CommandType commandType) {
+        assert commandType == CommandType.DELETE
+                || commandType == CommandType.MARK
+                || commandType == CommandType.UNMARK
+                : "Command type should be one that requires a task number";
         if (commandType == CommandType.DELETE) {
             return DELETE_COMMAND;
         } else if (commandType == CommandType.MARK) {

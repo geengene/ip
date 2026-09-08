@@ -11,6 +11,7 @@ public class Task {
      * Creates a new task that starts as not done.
      */
     public Task(String description) {
+        assert description != null && !description.isBlank() : "Task description should not be blank";
         this.description = description;
         this.isDone = false;
     }
