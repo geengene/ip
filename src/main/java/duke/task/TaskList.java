@@ -21,6 +21,8 @@ public class TaskList {
      * @param tasks Tasks to use as the initial list content.
      */
     public TaskList(ArrayList<Task> tasks) {
+        assert tasks != null : "Initial task list should not be null";
+        assert !tasks.contains(null) : "Initial task list should not contain null tasks";
         this.tasks = tasks;
     }
 
@@ -30,6 +32,7 @@ public class TaskList {
      * @param task Task to add.
      */
     public void add(Task task) {
+        assert task != null : "Task to add should not be null";
         tasks.add(task);
     }
 
@@ -40,6 +43,7 @@ public class TaskList {
      * @return Deleted task.
      */
     public Task delete(int taskIndex) {
+        assert taskIndex >= 0 && taskIndex < tasks.size() : "Task index should be within the task list";
         return tasks.remove(taskIndex);
     }
 
@@ -50,6 +54,7 @@ public class TaskList {
      * @return Marked task.
      */
     public Task mark(int taskIndex) {
+        assert taskIndex >= 0 && taskIndex < tasks.size() : "Task index should be within the task list";
         Task task = tasks.get(taskIndex);
         task.markAsDone();
         return task;
@@ -62,6 +67,7 @@ public class TaskList {
      * @return Unmarked task.
      */
     public Task unmark(int taskIndex) {
+        assert taskIndex >= 0 && taskIndex < tasks.size() : "Task index should be within the task list";
         Task task = tasks.get(taskIndex);
         task.markAsNotDone();
         return task;
@@ -71,6 +77,7 @@ public class TaskList {
      * Returns the task at the given zero-based index.
      */
     public Task get(int taskIndex) {
+        assert taskIndex >= 0 && taskIndex < tasks.size() : "Task index should be within the task list";
         return tasks.get(taskIndex);
     }
 
@@ -78,6 +85,7 @@ public class TaskList {
      * Returns tasks with descriptions containing the given keyword.
      */
     public TaskList find(String keyword) {
+        assert keyword != null && !keyword.isEmpty() : "Search keyword should not be empty";
         ArrayList<Task> matchingTasks = new ArrayList<>();
         for (Task task : tasks) {
             if (task.getDescription().contains(keyword)) {

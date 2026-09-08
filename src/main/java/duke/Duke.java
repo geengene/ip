@@ -103,6 +103,7 @@ public class Duke {
      */
     private String handleCommand(String command) throws DukeException {
         Parser.CommandType commandType = Parser.parseCommandType(command);
+        assert commandType != null : "Parsed command type should not be null";
 
         if (commandType == Parser.CommandType.EXIT) {
             return ui.formatGoodbye();
@@ -124,6 +125,7 @@ public class Duke {
             return addEvent(command);
         }
 
+        assert false : "Every command type should be handled";
         throw new DukeException("Sorry, I don't understand that command. Try todo, deadline, event, list, "
                 + "mark, unmark, delete, find, or bye.");
     }
