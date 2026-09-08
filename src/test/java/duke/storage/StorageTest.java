@@ -43,11 +43,13 @@ public class StorageTest {
 
         storage.saveTasks(tasks);
 
-        assertEquals(
-                "T | 1 | read book\n"
-                        + "D | 0 | return book | 2019-10-15\n"
-                        + "E | 0 | project meeting | 2019-10-15 | 2019-10-16\n",
-                Files.readString(dataFile));
+        String expectedContent = String.join(
+                System.lineSeparator(),
+                "T | 1 | read book",
+                "D | 0 | return book | 2019-10-15",
+                "E | 0 | project meeting | 2019-10-15 | 2019-10-16")
+                + System.lineSeparator();
+        assertEquals(expectedContent, Files.readString(dataFile));
     }
 
     @Test
