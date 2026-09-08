@@ -1,7 +1,7 @@
 package duke.task;
 
 import java.util.ArrayList;
-import java.util.stream.Collectors;
+import java.util.List;
 
 /**
  * Stores the chatbot's tasks and provides operations for changing the list.
@@ -21,10 +21,10 @@ public class TaskList {
      *
      * @param tasks Tasks to use as the initial list content.
      */
-    public TaskList(ArrayList<Task> tasks) {
+    public TaskList(List<Task> tasks) {
         assert tasks != null : "Initial task list should not be null";
         assert !tasks.contains(null) : "Initial task list should not contain null tasks";
-        this.tasks = tasks;
+        this.tasks = new ArrayList<>(tasks);
     }
 
     /**
@@ -87,9 +87,9 @@ public class TaskList {
      */
     public TaskList find(String keyword) {
         assert keyword != null && !keyword.isEmpty() : "Search keyword should not be empty";
-        ArrayList<Task> matchingTasks = tasks.stream()
+        List<Task> matchingTasks = tasks.stream()
                 .filter(task -> task.getDescription().contains(keyword))
-                .collect(Collectors.toCollection(ArrayList::new));
+                .toList();
 
         return new TaskList(matchingTasks);
     }
@@ -102,9 +102,9 @@ public class TaskList {
     }
 
     /**
-     * Returns the underlying list for storage and display code.
+     * Returns an immutable snapshot of the tasks for storage code.
      */
-    public ArrayList<Task> getTasks() {
-        return tasks;
+    public List<Task> getTasks() {
+        return List.copyOf(tasks);
     }
 }
