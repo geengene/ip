@@ -1,6 +1,10 @@
 package duke.task;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
@@ -16,6 +20,30 @@ public class TaskListTest {
 
         assertEquals(1, tasks.size());
         assertEquals("[T][ ] read book", tasks.get(0).toString());
+    }
+
+    @Test
+    public void constructor_externalListChanges_doesNotChangeTaskList() {
+        ArrayList<Task> initialTasks = new ArrayList<>();
+        initialTasks.add(new ToDo("read book"));
+        TaskList tasks = new TaskList(initialTasks);
+
+        initialTasks.clear();
+
+        assertEquals(1, tasks.size());
+        assertEquals("[T][ ] read book", tasks.get(0).toString());
+    }
+
+    @Test
+    public void getTasks_existingTasks_returnsImmutableSnapshot() {
+        TaskList tasks = new TaskList();
+        tasks.add(new ToDo("read book"));
+
+        List<Task> taskSnapshot = tasks.getTasks();
+        tasks.add(new ToDo("return book"));
+
+        assertEquals(1, taskSnapshot.size());
+        assertThrows(UnsupportedOperationException.class, () -> taskSnapshot.add(new ToDo("write report")));
     }
 
     @Test

@@ -7,6 +7,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -61,7 +62,7 @@ public class StorageTest {
                         + "E | 0 | project meeting | 2019-10-15 | 2019-10-16\n");
         Storage storage = new Storage(dataFile.toString());
 
-        ArrayList<Task> tasks = storage.loadTasks();
+        List<Task> tasks = storage.loadTasks();
 
         assertEquals(3, tasks.size());
         assertEquals("[T][X] read book", tasks.get(0).toString());

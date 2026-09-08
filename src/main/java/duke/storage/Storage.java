@@ -39,7 +39,7 @@ public class Storage {
      * @return Tasks loaded from the data file.
      * @throws DukeException If the data file cannot be read or has invalid content.
      */
-    public ArrayList<Task> loadTasks() throws DukeException {
+    public List<Task> loadTasks() throws DukeException {
         ArrayList<Task> loadedTasks = new ArrayList<>();
 
         if (!Files.exists(dataFile)) {
@@ -68,7 +68,7 @@ public class Storage {
      * @param tasks Tasks to save.
      * @throws DukeException If the data file cannot be written.
      */
-    public void saveTasks(ArrayList<Task> tasks) throws DukeException {
+    public void saveTasks(List<Task> tasks) throws DukeException {
         try {
             Path folder = dataFile.getParent();
             if (folder != null) {
