@@ -1,5 +1,6 @@
 package duke;
 
+import java.time.LocalDate;
 import java.util.Scanner;
 
 import duke.exception.DukeException;
@@ -117,6 +118,8 @@ public class Duke {
             return unmarkTask(command);
         } else if (commandType == Parser.CommandType.FIND) {
             return findTasks(command);
+        } else if (commandType == Parser.CommandType.SCHEDULE) {
+            return viewSchedule(command);
         } else if (commandType == Parser.CommandType.TODO) {
             return addToDo(command);
         } else if (commandType == Parser.CommandType.DEADLINE) {
@@ -127,7 +130,7 @@ public class Duke {
 
         assert false : "Every command type should be handled";
         throw new DukeException("Sorry, I don't understand that command. Try todo, deadline, event, list, "
-                + "mark, unmark, delete, find, or bye.");
+                + "mark, unmark, delete, find, schedule, or bye.");
     }
 
     /**
@@ -143,6 +146,14 @@ public class Duke {
     private String findTasks(String command) throws DukeException {
         String keyword = Parser.parseFindKeyword(command);
         return ui.formatMatchingTasks(tasks.find(keyword));
+    }
+
+    /**
+     * Returns the deadlines and events scheduled on the requested date.
+     */
+    private String viewSchedule(String command) throws DukeException {
+        LocalDate date = Parser.parseScheduleDate(command);
+        return ui.formatSchedule(date, tasks.getScheduledTasks(date));
     }
 
     /**

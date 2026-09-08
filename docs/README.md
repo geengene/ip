@@ -1,30 +1,26 @@
 # geen User Guide
 
-// Update the title above to match the actual product name
+geen is a personal assistant chatbot that keeps track of todos, deadlines, and events.
 
-// Product screenshot goes here
+## Viewing a schedule
 
-// Product intro goes here
+Use `schedule DATE` to view deadlines due and events taking place on a specific date.
+Enter the date in `yyyy-MM-dd` format.
 
-## Adding deadlines
+Example: `schedule 2019-10-15`
 
-// Describe the action and its outcome.
-
-// Give examples of usage
-
-Example: `keyword (optional arguments)`
-
-// A description of the expected outcome goes here
-
-```
-expected output
+```text
+Schedule for Oct 15 2019:
+1.[D][ ] return book (by: Oct 15 2019)
+2.[E][ ] project meeting (from: Oct 14 2019 to: Oct 16 2019)
 ```
 
-## Feature ABC
+Events spanning multiple days appear on their start date, end date, and every date
+between them. Todos are not shown because they have no scheduled date. Completed
+deadlines and events remain visible in the schedule.
 
-// Feature details
+If no task is scheduled on the requested date, geen responds with:
 
-
-## Feature XYZ
-
-// Feature details
+```text
+There are no scheduled tasks on Oct 15 2019.
+```

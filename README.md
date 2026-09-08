@@ -63,6 +63,13 @@ Prerequisites: JDK 25, update Intellij to the most recent version.
    2.[D][ ] return book (by: Oct 15 2019)
    ____________________________________________________________
 
+   schedule 2019-10-15
+   ____________________________________________________________
+   Schedule for Oct 15 2019:
+   1.[D][ ] return book (by: Oct 15 2019)
+   2.[E][ ] project meeting (from: Oct 15 2019 to: Oct 16 2019)
+   ____________________________________________________________
+
    delete 2
    ____________________________________________________________
    Noted. I've removed this task:
@@ -90,7 +97,7 @@ Prerequisites: JDK 25, update Intellij to the most recent version.
 
    blah
    ____________________________________________________________
-   OOPS!!! Sorry, I don't understand that command. Try todo, deadline, event, list, mark, unmark, delete, find, or bye.
+   OOPS!!! Sorry, I don't understand that command. Try todo, deadline, event, list, mark, unmark, delete, find, schedule, or bye.
    ____________________________________________________________
 
    bye

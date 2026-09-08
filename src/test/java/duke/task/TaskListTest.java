@@ -3,6 +3,7 @@ package duke.task;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -99,5 +100,47 @@ public class TaskListTest {
         TaskList matchingTasks = tasks.find("movie");
 
         assertEquals(0, matchingTasks.size());
+    }
+
+    @Test
+    public void getScheduledTasks_matchingDate_returnsDatedTasksInInsertionOrder() {
+        TaskList tasks = new TaskList();
+        tasks.add(new ToDo("read book"));
+        tasks.add(new Deadline("submit report", LocalDate.of(2019, 10, 15)));
+        tasks.add(new Deadline("pay bill", LocalDate.of(2019, 10, 16)));
+        tasks.add(new Event("conference", LocalDate.of(2019, 10, 14), LocalDate.of(2019, 10, 16)));
+        tasks.add(new Event("holiday", LocalDate.of(2019, 10, 15), LocalDate.of(2019, 10, 18)));
+        tasks.mark(1);
+
+        TaskList scheduledTasks = tasks.getScheduledTasks(LocalDate.of(2019, 10, 15));
+
+        assertEquals(3, scheduledTasks.size());
+        assertEquals("[D][X] submit report (by: Oct 15 2019)", scheduledTasks.get(0).toString());
+        assertEquals(
+                "[E][ ] conference (from: Oct 14 2019 to: Oct 16 2019)",
+                scheduledTasks.get(1).toString());
+        assertEquals(
+                "[E][ ] holiday (from: Oct 15 2019 to: Oct 18 2019)",
+                scheduledTasks.get(2).toString());
+    }
+
+    @Test
+    public void getScheduledTasks_eventBoundaryDates_includesEvent() {
+        TaskList tasks = new TaskList();
+        tasks.add(new Event("conference", LocalDate.of(2019, 10, 14), LocalDate.of(2019, 10, 16)));
+
+        assertEquals(1, tasks.getScheduledTasks(LocalDate.of(2019, 10, 14)).size());
+        assertEquals(1, tasks.getScheduledTasks(LocalDate.of(2019, 10, 16)).size());
+    }
+
+    @Test
+    public void getScheduledTasks_noMatchingDate_returnsEmptyTaskList() {
+        TaskList tasks = new TaskList();
+        tasks.add(new ToDo("read book"));
+        tasks.add(new Deadline("submit report", LocalDate.of(2019, 10, 15)));
+
+        TaskList scheduledTasks = tasks.getScheduledTasks(LocalDate.of(2019, 10, 16));
+
+        assertEquals(0, scheduledTasks.size());
     }
 }

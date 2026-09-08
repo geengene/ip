@@ -1,5 +1,9 @@
 package duke.ui;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
+
 import duke.task.Task;
 import duke.task.TaskList;
 
@@ -10,6 +14,8 @@ public class Ui {
     private static final String LINE = "____________________________________________________________";
     private static final String CHATBOT_NAME = "geen";
     private static final String CHATBOT_BANNER = CHATBOT_NAME;
+    private static final DateTimeFormatter DISPLAY_DATE_FORMAT =
+            DateTimeFormatter.ofPattern("MMM dd yyyy", Locale.ENGLISH);
 
     /**
      * Prints the opening chatbot message.
@@ -172,6 +178,29 @@ public class Ui {
         StringBuilder message = new StringBuilder();
         message.append(LINE).append("\n");
         message.append("Here are the matching tasks in your list:");
+        for (int i = 0; i < tasks.size(); i++) {
+            message.append("\n").append(i + 1).append(".").append(tasks.get(i));
+        }
+        message.append("\n").append(LINE);
+        return message.toString();
+    }
+
+    /**
+     * Returns deadlines and events scheduled on the given date.
+     */
+    public String formatSchedule(LocalDate date, TaskList tasks) {
+        assert date != null : "Schedule date should not be null";
+        assert tasks != null : "Scheduled task list should not be null";
+        String displayDate = date.format(DISPLAY_DATE_FORMAT);
+        if (tasks.size() == 0) {
+            return LINE + "\n"
+                    + "There are no scheduled tasks on " + displayDate + ".\n"
+                    + LINE;
+        }
+
+        StringBuilder message = new StringBuilder();
+        message.append(LINE).append("\n");
+        message.append("Schedule for ").append(displayDate).append(":");
         for (int i = 0; i < tasks.size(); i++) {
             message.append("\n").append(i + 1).append(".").append(tasks.get(i));
         }

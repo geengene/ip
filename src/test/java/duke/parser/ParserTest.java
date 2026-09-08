@@ -3,6 +3,8 @@ package duke.parser;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import java.time.LocalDate;
+
 import org.junit.jupiter.api.Test;
 
 import duke.exception.DukeException;
@@ -25,6 +27,7 @@ public class ParserTest {
         assertEquals(Parser.CommandType.UNMARK, Parser.parseCommandType("unmark 1"));
         assertEquals(Parser.CommandType.DELETE, Parser.parseCommandType("delete 1"));
         assertEquals(Parser.CommandType.FIND, Parser.parseCommandType("find book"));
+        assertEquals(Parser.CommandType.SCHEDULE, Parser.parseCommandType("schedule 2019-10-15"));
         assertEquals(Parser.CommandType.EXIT, Parser.parseCommandType("bye"));
     }
 
@@ -33,7 +36,7 @@ public class ParserTest {
         DukeException exception = assertThrows(DukeException.class, () -> Parser.parseCommandType("hello"));
         assertEquals(
                 "Sorry, I don't understand that command. Try todo, deadline, event, list, "
-                        + "mark, unmark, delete, find, or bye.",
+                        + "mark, unmark, delete, find, schedule, or bye.",
                 exception.getMessage());
     }
 
@@ -47,6 +50,28 @@ public class ParserTest {
         DukeException exception = assertThrows(DukeException.class, () -> Parser.parseFindKeyword("find"));
 
         assertEquals("A find command needs a keyword. For example: find book", exception.getMessage());
+    }
+
+    @Test
+    public void parseScheduleDate_validIsoDate_returnsDate() throws DukeException {
+        assertEquals(LocalDate.of(2019, 10, 15), Parser.parseScheduleDate("schedule 2019-10-15"));
+    }
+
+    @Test
+    public void parseScheduleDate_missingDate_throwsException() {
+        DukeException exception = assertThrows(DukeException.class, () -> Parser.parseScheduleDate("schedule"));
+
+        assertEquals("A schedule command needs a date. For example: schedule 2019-10-15", exception.getMessage());
+    }
+
+    @Test
+    public void parseScheduleDate_invalidDate_throwsException() {
+        DukeException exception = assertThrows(
+                DukeException.class, () -> Parser.parseScheduleDate("schedule next Monday"));
+
+        assertEquals(
+                "Dates must be in yyyy-MM-dd format. For example: schedule 2019-10-15",
+                exception.getMessage());
     }
 
     @Test

@@ -77,6 +77,60 @@ Data file:
 T | 0 | read book
 E | 0 | project meeting | 2019-10-15 | 2019-10-16
 
+## schedules show dated tasks for a requested day
+Aim: Verify schedules include deadlines and multi-day events, preserve completion status and insertion order, exclude todos, and reject invalid dates.
+
+Setup data file:
+T | 0 | unscheduled task
+D | 1 | submit report | 2019-10-15
+D | 0 | pay bill | 2019-10-17
+E | 0 | conference | 2019-10-14 | 2019-10-16
+E | 0 | holiday | 2019-10-16 | 2019-10-18
+
+Input:
+schedule 2019-10-15
+schedule 2019-10-16
+schedule 2019-10-19
+schedule
+schedule next Monday
+bye
+
+Output:
+____________________________________________________________
+geen
+Hello! I'm geen.
+What can I do for you?
+____________________________________________________________
+____________________________________________________________
+Schedule for Oct 15 2019:
+1.[D][X] submit report (by: Oct 15 2019)
+2.[E][ ] conference (from: Oct 14 2019 to: Oct 16 2019)
+____________________________________________________________
+____________________________________________________________
+Schedule for Oct 16 2019:
+1.[E][ ] conference (from: Oct 14 2019 to: Oct 16 2019)
+2.[E][ ] holiday (from: Oct 16 2019 to: Oct 18 2019)
+____________________________________________________________
+____________________________________________________________
+There are no scheduled tasks on Oct 19 2019.
+____________________________________________________________
+____________________________________________________________
+OOPS!!! A schedule command needs a date. For example: schedule 2019-10-15
+____________________________________________________________
+____________________________________________________________
+OOPS!!! Dates must be in yyyy-MM-dd format. For example: schedule 2019-10-15
+____________________________________________________________
+____________________________________________________________
+Bye. Hope to see you again soon!
+____________________________________________________________
+
+Data file:
+T | 0 | unscheduled task
+D | 1 | submit report | 2019-10-15
+D | 0 | pay bill | 2019-10-17
+E | 0 | conference | 2019-10-14 | 2019-10-16
+E | 0 | holiday | 2019-10-16 | 2019-10-18
+
 ## corrupted saved dates report errors
 Aim: Verify an invalid saved deadline date is reported without crashing the chatbot.
 
@@ -143,7 +197,7 @@ ____________________________________________________________
 OOPS!!! A todo needs a description. For example: todo read book
 ____________________________________________________________
 ____________________________________________________________
-OOPS!!! Sorry, I don't understand that command. Try todo, deadline, event, list, mark, unmark, delete, find, or bye.
+OOPS!!! Sorry, I don't understand that command. Try todo, deadline, event, list, mark, unmark, delete, find, schedule, or bye.
 ____________________________________________________________
 ____________________________________________________________
 OOPS!!! A find command needs a keyword. For example: find book

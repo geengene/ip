@@ -22,6 +22,8 @@ public class Parser {
     private static final String UNMARK_COMMAND_PREFIX = "unmark ";
     private static final String FIND_COMMAND = "find";
     private static final String FIND_COMMAND_PREFIX = "find ";
+    private static final String SCHEDULE_COMMAND = "schedule";
+    private static final String SCHEDULE_COMMAND_PREFIX = "schedule ";
     private static final String TODO_COMMAND = "todo";
     private static final String TODO_COMMAND_PREFIX = "todo ";
     private static final String DEADLINE_COMMAND = "deadline";
@@ -42,6 +44,7 @@ public class Parser {
         MARK,
         UNMARK,
         FIND,
+        SCHEDULE,
         TODO,
         DEADLINE,
         EVENT
@@ -67,6 +70,8 @@ public class Parser {
             return CommandType.UNMARK;
         } else if (command.equals(FIND_COMMAND) || command.startsWith(FIND_COMMAND_PREFIX)) {
             return CommandType.FIND;
+        } else if (command.equals(SCHEDULE_COMMAND) || command.startsWith(SCHEDULE_COMMAND_PREFIX)) {
+            return CommandType.SCHEDULE;
         } else if (command.equals(TODO_COMMAND) || command.startsWith(TODO_COMMAND_PREFIX)) {
             return CommandType.TODO;
         } else if (command.equals(DEADLINE_COMMAND) || command.startsWith(DEADLINE_COMMAND_PREFIX)) {
@@ -75,7 +80,7 @@ public class Parser {
             return CommandType.EVENT;
         } else {
             throw new DukeException("Sorry, I don't understand that command. Try todo, deadline, event, list, "
-                    + "mark, unmark, delete, find, or bye.");
+                    + "mark, unmark, delete, find, schedule, or bye.");
         }
     }
 
@@ -93,6 +98,22 @@ public class Parser {
         }
 
         return keyword;
+    }
+
+    /**
+     * Returns the date requested by a schedule command.
+     *
+     * @param command Full schedule command entered by the user.
+     * @return Date whose schedule should be displayed.
+     * @throws DukeException If the date is missing or invalid.
+     */
+    public static LocalDate parseScheduleDate(String command) throws DukeException {
+        String dateText = getCommandDetails(command, SCHEDULE_COMMAND, SCHEDULE_COMMAND_PREFIX);
+        if (dateText.isEmpty()) {
+            throw new DukeException("A schedule command needs a date. For example: schedule 2019-10-15");
+        }
+
+        return parseDate(dateText, "schedule 2019-10-15");
     }
 
     /**
