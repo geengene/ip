@@ -4,8 +4,8 @@ package duke.task;
  * Represents one task in the chatbot's task list.
  */
 public class Task {
-    protected String description;
-    protected boolean isDone;
+    private final String description;
+    private boolean isDone;
 
     /**
      * Creates a new task that starts as not done.
