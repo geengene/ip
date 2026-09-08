@@ -11,7 +11,7 @@ public class Deadline extends Task {
     private static final DateTimeFormatter DISPLAY_DATE_FORMAT =
             DateTimeFormatter.ofPattern("MMM dd yyyy", Locale.ENGLISH);
 
-    private LocalDate by;
+    private final LocalDate by;
 
     /**
      * Creates a new deadline task.

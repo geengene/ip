@@ -164,9 +164,16 @@ public class Duke {
      */
     private String addTask(Task task) throws DukeException {
         tasks.add(task);
-        storage.saveTasks(tasks.getTasks());
+        saveTaskList();
 
         return ui.formatTaskAdded(task, tasks.size());
+    }
+
+    /**
+     * Saves the current task list to persistent storage.
+     */
+    private void saveTaskList() throws DukeException {
+        storage.saveTasks(tasks.getTasks());
     }
 
     /**
@@ -175,7 +182,7 @@ public class Duke {
     private String deleteTask(String command) throws DukeException {
         int taskIndex = Parser.parseTaskIndex(command, Parser.CommandType.DELETE, tasks.size());
         Task deletedTask = tasks.delete(taskIndex);
-        storage.saveTasks(tasks.getTasks());
+        saveTaskList();
 
         return ui.formatTaskDeleted(deletedTask, tasks.size());
     }
@@ -187,7 +194,7 @@ public class Duke {
         int taskIndex = Parser.parseTaskIndex(command, Parser.CommandType.MARK, tasks.size());
 
         Task task = tasks.mark(taskIndex);
-        storage.saveTasks(tasks.getTasks());
+        saveTaskList();
 
         return ui.formatTaskMarked(task);
     }
@@ -199,7 +206,7 @@ public class Duke {
         int taskIndex = Parser.parseTaskIndex(command, Parser.CommandType.UNMARK, tasks.size());
 
         Task task = tasks.unmark(taskIndex);
-        storage.saveTasks(tasks.getTasks());
+        saveTaskList();
 
         return ui.formatTaskUnmarked(task);
     }
