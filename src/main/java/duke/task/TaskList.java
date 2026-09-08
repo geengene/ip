@@ -1,5 +1,6 @@
 package duke.task;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -92,6 +93,35 @@ public class TaskList {
                 .toList();
 
         return new TaskList(matchingTasks);
+    }
+
+    /**
+     * Returns deadlines due and events taking place on the given date.
+     * Multi-day events are included on both boundary dates and every date between them.
+     *
+     * @param date Date whose scheduled tasks should be returned.
+     * @return Scheduled tasks in their original insertion order.
+     */
+    public TaskList getScheduledTasks(LocalDate date) {
+        assert date != null : "Schedule date should not be null";
+        List<Task> scheduledTasks = tasks.stream()
+                .filter(task -> isScheduledOn(task, date))
+                .toList();
+
+        return new TaskList(scheduledTasks);
+    }
+
+    /**
+     * Returns whether a task has a deadline or event period covering the given date.
+     */
+    private boolean isScheduledOn(Task task, LocalDate date) {
+        if (task instanceof Deadline deadline) {
+            return deadline.getBy().equals(date);
+        }
+        if (task instanceof Event event) {
+            return !date.isBefore(event.getFrom()) && !date.isAfter(event.getTo());
+        }
+        return false;
     }
 
     /**
