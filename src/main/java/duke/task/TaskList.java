@@ -1,6 +1,7 @@
 package duke.task;
 
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 /**
  * Stores the chatbot's tasks and provides operations for changing the list.
@@ -86,12 +87,9 @@ public class TaskList {
      */
     public TaskList find(String keyword) {
         assert keyword != null && !keyword.isEmpty() : "Search keyword should not be empty";
-        ArrayList<Task> matchingTasks = new ArrayList<>();
-        for (Task task : tasks) {
-            if (task.getDescription().contains(keyword)) {
-                matchingTasks.add(task);
-            }
-        }
+        ArrayList<Task> matchingTasks = tasks.stream()
+                .filter(task -> task.getDescription().contains(keyword))
+                .collect(Collectors.toCollection(ArrayList::new));
 
         return new TaskList(matchingTasks);
     }
