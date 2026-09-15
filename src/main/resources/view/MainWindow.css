@@ -36,6 +36,7 @@
     -fx-text-fill: #52675c;
 }
 .message-body {
+    -fx-font-family: "Menlo", "Consolas", "Courier New", monospace;
     -fx-text-fill: #233d30;
     -fx-line-spacing: 3px;
 }

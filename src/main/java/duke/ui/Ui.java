@@ -13,7 +13,12 @@ import duke.task.TaskList;
 public class Ui {
     private static final String LINE = "____________________________________________________________";
     private static final String CHATBOT_NAME = "geen";
-    private static final String CHATBOT_BANNER = CHATBOT_NAME;
+    private static final String CHATBOT_BANNER = String.join("\n",
+            "  ____ _____ _____ _   _",
+            " / ___| ____| ____| \\ | |",
+            "| |  _|  _| |  _| |  \\| |",
+            "| |_| | |___| |___| |\\  |",
+            " \\____|_____|_____|_| \\_|");
     private static final DateTimeFormatter DISPLAY_DATE_FORMAT =
             DateTimeFormatter.ofPattern("MMM dd yyyy", Locale.ENGLISH);
 
