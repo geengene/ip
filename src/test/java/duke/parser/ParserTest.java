@@ -41,6 +41,31 @@ public class ParserTest {
     }
 
     @Test
+    public void parseCommandType_blankCommand_throwsHelpfulException() {
+        DukeException exception = assertThrows(DukeException.class, () -> Parser.parseCommandType(" \t "));
+        assertEquals("Please type a command. For example: todo read book", exception.getMessage());
+    }
+
+    @Test
+    public void parseEvent_endBeforeStart_throwsException() {
+        DukeException exception = assertThrows(DukeException.class,
+                () -> Parser.parseEvent("event backwards /from 2019-10-16 /to 2019-10-15"));
+        assertEquals("An event's end date cannot be before its start date. Check /from and /to.",
+                exception.getMessage());
+    }
+
+    @Test
+    public void parseEvent_sameDay_returnsEvent() throws DukeException {
+        Event task = Parser.parseEvent("event meeting /from 2019-10-15 /to 2019-10-15");
+        assertEquals(task.getFrom(), task.getTo());
+    }
+
+    @Test
+    public void parseDeadline_impossibleCalendarDate_throwsException() {
+        assertThrows(DukeException.class, () -> Parser.parseDeadline("deadline report /by 2019-02-29"));
+    }
+
+    @Test
     public void parseFindKeyword_validCommand_returnsKeyword() throws DukeException {
         assertEquals("book", Parser.parseFindKeyword("find book"));
     }
