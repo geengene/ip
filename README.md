@@ -16,7 +16,11 @@ Prerequisites: JDK 25, update Intellij to the most recent version.
 1. After that, run `./gradlew run` from the project root to start the JavaFX GUI. To try the command-line version instead, locate the `src/main/java/duke/Duke.java` file, right-click it, and choose `Run Duke.main()` (if the code editor is showing compile errors, try restarting the IDE). If the command-line setup is correct, you should see something like the below as the output:
    ```
    ____________________________________________________________
-   geen
+     ____ _____ _____ _   _
+    / ___| ____| ____| \ | |
+   | |  _|  _| |  _| |  \| |
+   | |_| | |___| |___| |\  |
+    \____|_____|_____|_| \_|
    Hello! I'm geen.
    What can I do for you?
    ____________________________________________________________
@@ -176,3 +180,10 @@ python3 test/run-ui-tests.py
 `guiTest` needs a graphical display and is separate from the normal headless
 build. It writes GUI screenshots to `build/reports/gui-tests/` for visual review.
 The CLI transcript tests use temporary folders and do not modify your saved tasks.
+
+## Credits
+
+This project builds on the CS2103T iP starter template. The geen-specific GUI,
+error handling, tests, documentation updates, and ASCII banner were written for
+this project with AI assistance. No external project code or third-party solution
+snippets were copied.
