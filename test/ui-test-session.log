@@ -1,5 +1,56 @@
 # UI Test Session
 
+## invalid input is recoverable and surrounding whitespace is ignored
+Aim: Verify blank input, impossible event ranges, and invalid calendar dates give actionable errors without adding tasks; valid same-day events and whitespace-padded commands still work.
+
+Input:
+
+event backwards /from 2019-10-16 /to 2019-10-15
+deadline impossible /by 2019-02-29
+  todo read book
+event meeting /from 2019-10-15 /to 2019-10-15
+  list
+  bye
+todo must not be added
+
+Output:
+____________________________________________________________
+geen
+Hello! I'm geen.
+What can I do for you?
+____________________________________________________________
+____________________________________________________________
+OOPS!!! Please type a command. For example: todo read book
+____________________________________________________________
+____________________________________________________________
+OOPS!!! An event's end date cannot be before its start date. Check /from and /to.
+____________________________________________________________
+____________________________________________________________
+OOPS!!! Dates must be in yyyy-MM-dd format. For example: deadline submit report /by 2019-10-15
+____________________________________________________________
+____________________________________________________________
+Got it. I've added this task:
+  [T][ ] read book
+Now you have 1 tasks in the list.
+____________________________________________________________
+____________________________________________________________
+Got it. I've added this task:
+  [E][ ] meeting (from: Oct 15 2019 to: Oct 15 2019)
+Now you have 2 tasks in the list.
+____________________________________________________________
+____________________________________________________________
+Here are the tasks in your list:
+1.[T][ ] read book
+2.[E][ ] meeting (from: Oct 15 2019 to: Oct 15 2019)
+____________________________________________________________
+____________________________________________________________
+Bye. Hope to see you again soon!
+____________________________________________________________
+
+Data file:
+T | 0 | read book
+E | 0 | meeting | 2019-10-15 | 2019-10-15
+
 ## typed tasks can be added, listed, marked, unmarked, and deleted
 Aim: Verify todo, deadline, and event tasks use inherited formatting, keep correct done status, and renumber correctly after deletion.
 
