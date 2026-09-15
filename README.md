@@ -1,6 +1,7 @@
-# geen project template
+# geen
 
-This is a project template for a greenfield Java project currently branded as _geen_. Given below are instructions on how to use it.
+geen is a personal assistant chatbot for tracking todos, deadlines, and events.
+Given below are instructions for setting up and running the project.
 
 ## Setting up in Intellij
 
@@ -120,20 +121,20 @@ Run the following command from the project root:
 ./gradlew shadowJar
 ```
 
-The executable JAR file will be created at:
+The cross-platform executable JAR file will be created at:
 
 ```text
-build/libs/duke.jar
+build/libs/geen.jar
 ```
 
-To test it as a user would, copy `duke.jar` into an empty folder, open a command
+To test it as a user would, copy `geen.jar` into an empty folder, open a command
 window in that folder, and run:
 
 ```bash
-java -jar "duke.jar"
+java -jar "geen.jar"
 ```
 
-Do not commit `build/libs/duke.jar`; it is a generated build output. If the JAR
+Do not commit `build/libs/geen.jar`; it is a generated build output. If the JAR
 needs to be distributed, attach it to a GitHub release instead.
 
 ## Running the GUI
@@ -185,5 +186,6 @@ The CLI transcript tests use temporary folders and do not modify your saved task
 
 This project builds on the CS2103T iP starter template. The geen-specific GUI,
 error handling, tests, documentation updates, and ASCII banner were written for
-this project with AI assistance. No external project code or third-party solution
-snippets were copied.
+this project with AI assistance. The cross-platform JavaFX dependency setup is
+adapted from the [SE-EDU JavaFX tutorial](https://se-education.org/guides/tutorials/javaFxPart1.html).
+No external project code or third-party solution snippets were copied.
