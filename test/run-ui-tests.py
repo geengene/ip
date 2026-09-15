@@ -6,6 +6,7 @@ from __future__ import annotations
 import re
 import subprocess
 import sys
+import tempfile
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -14,7 +15,6 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 PLAN_PATH = PROJECT_ROOT / "test" / "ui-test-plan.md"
 BUILD_DIR = Path("/private/tmp/codex-ip-ui-tests")
 SESSION_LOG_PATH = PROJECT_ROOT / "test" / "ui-test-session.log"
-DATA_FILE_PATH = PROJECT_ROOT / "data" / "duke.txt"
 
 
 @dataclass
@@ -74,39 +74,28 @@ def compile_program() -> None:
     subprocess.run(["javac", "-d", str(BUILD_DIR), *source_files], check=True, cwd=PROJECT_ROOT)
 
 
-def reset_data_file() -> None:
-    if DATA_FILE_PATH.exists():
-        DATA_FILE_PATH.unlink()
-    try:
-        DATA_FILE_PATH.parent.rmdir()
-    except FileNotFoundError:
-        pass
-    except OSError:
-        pass
-
-
-def write_setup_data_file(test_case: TestCase) -> None:
+def write_setup_data_file(test_case: TestCase, data_file: Path) -> None:
     if test_case.setup_data_file is None:
         return
 
-    DATA_FILE_PATH.parent.mkdir(parents=True, exist_ok=True)
-    DATA_FILE_PATH.write_text(test_case.setup_data_file + "\n")
+    data_file.parent.mkdir(parents=True, exist_ok=True)
+    data_file.write_text(test_case.setup_data_file + "\n")
 
 
-def read_data_file() -> str:
-    if not DATA_FILE_PATH.exists():
+def read_data_file(data_file: Path) -> str:
+    if not data_file.exists():
         return ""
-    return DATA_FILE_PATH.read_text().rstrip("\n")
+    return data_file.read_text().rstrip("\n")
 
 
-def run_case(test_case: TestCase) -> str:
+def run_case(test_case: TestCase, working_dir: Path) -> str:
     result = subprocess.run(
         ["java", "-cp", str(BUILD_DIR), "duke.Duke"],
         input=test_case.inputs + "\n",
         text=True,
         capture_output=True,
         check=False,
-        cwd=PROJECT_ROOT,
+        cwd=working_dir,
     )
 
     if result.returncode != 0:
@@ -117,7 +106,7 @@ def run_case(test_case: TestCase) -> str:
     return result.stdout.rstrip("\n")
 
 
-def append_transcript(lines: list[str], test_case: TestCase, actual_output: str) -> None:
+def append_transcript(lines: list[str], test_case: TestCase, actual_output: str, data_file: Path) -> None:
     lines.extend(
         [
             f"## {test_case.name}",
@@ -147,7 +136,7 @@ def append_transcript(lines: list[str], test_case: TestCase, actual_output: str)
         lines.extend(
             [
                 "Data file:",
-                read_data_file(),
+                read_data_file(data_file),
                 "",
             ]
         )
@@ -160,10 +149,14 @@ def main() -> int:
     transcript_lines = ["# UI Test Session", ""]
 
     for test_case in test_cases:
-        reset_data_file()
-        write_setup_data_file(test_case)
-        actual_output = run_case(test_case)
-        append_transcript(transcript_lines, test_case, actual_output)
+        # Never replace or delete the user's real data/duke.txt when testing.
+        with tempfile.TemporaryDirectory(prefix="geen-ui-test-") as case_dir:
+            working_dir = Path(case_dir)
+            data_file = working_dir / "data" / "duke.txt"
+            write_setup_data_file(test_case, data_file)
+            actual_output = run_case(test_case, working_dir)
+            append_transcript(transcript_lines, test_case, actual_output, data_file)
+            actual_data_file = read_data_file(data_file)
 
         if actual_output != test_case.expected_output:
             SESSION_LOG_PATH.write_text("\n".join(transcript_lines))
@@ -175,7 +168,6 @@ def main() -> int:
             return 1
 
         if test_case.expected_data_file is not None:
-            actual_data_file = read_data_file()
             if actual_data_file != test_case.expected_data_file:
                 SESSION_LOG_PATH.write_text("\n".join(transcript_lines))
                 print(f"FAILED: {test_case.name}")
@@ -185,7 +177,6 @@ def main() -> int:
                 print(actual_data_file)
                 return 1
 
-    reset_data_file()
     SESSION_LOG_PATH.write_text("\n".join(transcript_lines))
     print(f"Passed {len(test_cases)} UI test case(s).")
     print(f"Session log: {SESSION_LOG_PATH}")

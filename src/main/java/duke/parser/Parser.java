@@ -58,6 +58,9 @@ public class Parser {
      * @throws DukeException If the command word is unknown.
      */
     public static CommandType parseCommandType(String command) throws DukeException {
+        if (command.isBlank()) {
+            throw new DukeException("Please type a command. For example: todo read book");
+        }
         if (command.equals(EXIT_COMMAND)) {
             return CommandType.EXIT;
         } else if (command.equals(LIST_COMMAND)) {
@@ -189,10 +192,12 @@ public class Parser {
             throw new DukeException("An event needs an end date after /to.");
         }
 
-        return new Event(
-                description,
-                parseDate(from, "event meeting /from 2019-10-15 /to 2019-10-16"),
-                parseDate(to, "event meeting /from 2019-10-15 /to 2019-10-16"));
+        LocalDate fromDate = parseDate(from, "event meeting /from 2019-10-15 /to 2019-10-16");
+        LocalDate toDate = parseDate(to, "event meeting /from 2019-10-15 /to 2019-10-16");
+        if (toDate.isBefore(fromDate)) {
+            throw new DukeException("An event's end date cannot be before its start date. Check /from and /to.");
+        }
+        return new Event(description, fromDate, toDate);
     }
 
     /**

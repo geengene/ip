@@ -8,6 +8,7 @@ import duke.parser.Parser;
 import duke.storage.Storage;
 import duke.task.Task;
 import duke.task.TaskList;
+import duke.ui.Response;
 import duke.ui.Ui;
 
 /**
@@ -66,10 +67,10 @@ public class Duke {
 
         while (scanner.hasNextLine()) {
             String command = scanner.nextLine();
-            String response = getResponse(command);
+            Response response = getReply(command);
 
-            System.out.println(response);
-            if (command.equals("bye")) {
+            System.out.println(response.text());
+            if (response.isExit()) {
                 break;
             }
         }
@@ -92,11 +93,32 @@ public class Duke {
      * Returns the chatbot's response to one user command.
      */
     public String getResponse(String command) {
+        return getReply(command).text();
+    }
+
+    /**
+     * Returns a reply with explicit error and exit status for GUI presentation.
+     * Leading and trailing whitespace is ignored consistently in both interfaces.
+     *
+     * @param command User input, which may be blank.
+     * @return Reply text and the outcome of the command.
+     */
+    public Response getReply(String command) {
+        String normalizedCommand = command == null ? "" : command.trim();
         try {
-            return handleCommand(command);
+            return new Response(handleCommand(normalizedCommand), false, normalizedCommand.equals("bye"));
         } catch (DukeException e) {
-            return ui.formatError(e.getMessage());
+            return new Response(ui.formatError(e.getMessage()), true, false);
         }
+    }
+
+    /**
+     * Returns a startup warning separately so the GUI can highlight it without styling the greeting as an error.
+     *
+     * @return Warning reply, or null when loading succeeded.
+     */
+    public Response getStartupWarning() {
+        return startupError == null ? null : new Response(ui.formatError(startupError), true, false);
     }
 
     /**

@@ -29,7 +29,10 @@ javafx {
 }
 
 test {
-    useJUnitPlatform()
+    useJUnitPlatform {
+        // Native JavaFX tests run separately so normal builds work without a display.
+        excludeTags 'gui'
+    }
 
     testLogging {
         events 'passed', 'skipped', 'failed'
@@ -39,6 +42,20 @@ test {
         showCauses = true
         showStackTraces = true
         showStandardStreams = false
+    }
+}
+
+tasks.register('guiTest', Test) {
+    group = 'verification'
+    description = 'Tests JavaFX layout and interaction (requires a display).'
+    testClassesDirs = sourceSets.test.output.classesDirs
+    classpath = sourceSets.test.runtimeClasspath
+    useJUnitPlatform {
+        includeTags 'gui'
+    }
+    jvmArgs '--enable-native-access=ALL-UNNAMED,javafx.graphics'
+    testLogging {
+        events 'passed', 'failed'
     }
 }
 

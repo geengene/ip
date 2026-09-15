@@ -134,6 +134,12 @@ needs to be distributed, attach it to a GitHub release instead.
 
 ## Running the GUI
 
+The resizable GUI uses compact, right-aligned user commands and wider geen reply
+cards. Replies wrap as the window changes size, and the conversation scrolls to
+the newest message. Errors have a red border and a "NEEDS A FIX" label, so they
+are distinguishable without relying on colour alone. A failed command stays in
+the input field for correction; press Enter or click Send to try again.
+
 To run the JavaFX GUI from the command line, use:
 
 ```bash
@@ -148,3 +154,25 @@ To run the command-line version through Gradle, use:
 ```bash
 ./gradlew runCli
 ```
+
+## Optional enhancements
+
+- `A-BetterGui`: asymmetric message cards, labelled errors, clearer spacing and
+  colours, responsive wrapping, and a compact command hint without large avatars.
+- `A-MoreErrorHandling`: helpful blank-command errors and rejection of events
+  ending before they start. Leading/trailing command whitespace is ignored in
+  both interfaces. Same-day events remain valid.
+- `A-MoreTesting`: additional parser and chatbot regression tests, isolated CLI
+  transcripts, and native JavaFX interaction/layout tests.
+
+Run the automated checks with Java 25:
+
+```bash
+./gradlew test
+python3 test/run-ui-tests.py
+./gradlew guiTest
+```
+
+`guiTest` needs a graphical display and is separate from the normal headless
+build. It writes GUI screenshots to `build/reports/gui-tests/` for visual review.
+The CLI transcript tests use temporary folders and do not modify your saved tasks.
