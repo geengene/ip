@@ -8,11 +8,14 @@ scheduled for a date.
 
 ## Quick Start
 
-1. Launch geen.
-2. Type a command into the input box.
-3. Press Enter or click Send.
-4. Use `list` whenever you want to see your current tasks.
-5. Use `bye` when you are done.
+1. Install Java 25.
+2. Download `geen.jar` from the
+   [latest release](https://github.com/geengene/ip/releases/latest).
+3. Open a terminal in the folder containing the JAR and run
+   `java -jar "geen.jar"` to launch geen.
+4. Type a command into the input box, then press Enter or click Send.
+5. Use `list` whenever you want to see your current tasks.
+6. Use `bye` when you are done.
 
 Dates must use the `yyyy-MM-dd` format, such as `2019-10-15`.
 
@@ -200,5 +203,6 @@ command.
 
 This project builds on the CS2103T iP starter template. The geen-specific GUI,
 error handling, tests, documentation, and ASCII banner were written for this
-project with AI assistance. No external project code or third-party solution
-snippets were copied.
+project with AI assistance. The cross-platform JavaFX dependency setup is
+adapted from the [SE-EDU JavaFX tutorial](https://se-education.org/guides/tutorials/javaFxPart1.html).
+No external project code or third-party solution snippets were copied.
